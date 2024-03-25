@@ -17,14 +17,12 @@ public class JoinRequest {
     private String userNickName;
     private String userSex;
     private String userPhone;
-    private int userAge;
     private UserType userType;
-    private String mentorProfile; // 멘토 프로필 사진
-    private String mentorUniv; // 멘토 소속 대학
-    private String mentorClassNum; // 멘토 학번(20학번, 21학번 ...)
-    private String mentorMajor; // 멘토 학과
-    private String mentorIntro; // 멘토 소개글 (자유 형식)
-    private String mentorMbti; // 멘토 Mbti
+    private String tutorProfile; // 멘토 프로필 사진
+    private String tutorUniv; // 멘토 소속 대학
+    private String tutorClassNum; // 멘토 학번(20학번, 21학번 ...)
+    private String tutorMajor; // 멘토 학과
+    private String tutorIntro; // 멘토 소개글 (자유 형식)
 
     public User toEntity() {
         return User.builder()
@@ -35,14 +33,12 @@ public class JoinRequest {
                 .userNickName(userNickName)
                 .userSex(userSex)
                 .userPhone(userPhone)
-                .userAge(userAge)
                 .userType(userType)
-                .mentorProfile(mentorProfile)
-                .mentorUniv(mentorUniv)
-                .mentorClassNum(mentorClassNum)
-                .mentorMajor(mentorMajor)
-                .mentorIntro(mentorIntro)
-                .mentorMbti(mentorMbti)
+                .tutorProfile(tutorProfile)
+                .tutorUniv(tutorUniv)
+                .tutorClassNum(tutorClassNum)
+                .tutorMajor(tutorMajor)
+                .tutorIntro(tutorIntro)
                 .build();
     }
 }

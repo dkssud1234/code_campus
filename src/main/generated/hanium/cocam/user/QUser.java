@@ -19,21 +19,17 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
-    public final StringPath mentorClassNum = createString("mentorClassNum");
-
-    public final StringPath mentorIntro = createString("mentorIntro");
-
-    public final StringPath mentorMajor = createString("mentorMajor");
-
-    public final StringPath mentorMbti = createString("mentorMbti");
-
-    public final StringPath mentorProfile = createString("mentorProfile");
-
-    public final StringPath mentorUniv = createString("mentorUniv");
-
     public final StringPath password = createString("password");
 
-    public final NumberPath<Integer> userAge = createNumber("userAge", Integer.class);
+    public final StringPath tutorClassNum = createString("tutorClassNum");
+
+    public final StringPath tutorIntro = createString("tutorIntro");
+
+    public final StringPath tutorMajor = createString("tutorMajor");
+
+    public final StringPath tutorProfile = createString("tutorProfile");
+
+    public final StringPath tutorUniv = createString("tutorUniv");
 
     public final StringPath userEmail = createString("userEmail");
 

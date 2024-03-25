@@ -17,14 +17,16 @@ public class Classes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long classNo; // 시퀀스번호
-    @ManyToOne
-    @JoinColumn(name = "subject_code")
-    private Subject subjectCode; // 과목코드 (MATH, ENG, ...)
-    private String classArea; // 수업 지역 코드 (데이터량이 많아 일단 서비스는 수도권부터 베타서비스 실시)
+    private Long classNo; // 강의 번호
+    private String classTitle;
+    private String classLevel; // 강의 난이도(입문, 초급, 중급이상)
+    private String subjectName; // 강의에 사용되는 과목명(C, 자바, 자바스크립트, 리액트 ...)
+    private String classArea; // (오프라인 한정) 수업 지역 코드
     private String classDate; // 수업 가능한 날짜 (MON, TUE, WEN ...)
     private String classIntro; // 수업 소개 (자유형식)
-    private Double classPay; // 수업료
+    @Enumerated(EnumType.STRING)
+    private ClassType classType; // 수업 방식(ON, OFF, BOTH)
+    private String chatLink; // 오픈채팅방 링크
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_no") // User 엔티티의 기본 키를 참조하는 외래 키
     private User userNo; // 수업 만든 유저 번호
