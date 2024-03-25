@@ -19,9 +19,9 @@ public class ClassController {
     public ResponseEntity<List<ClassListResponse>> findClass(@RequestBody(required = false) ClassSearchCond mentorSearch) {
         List<ClassListResponse> findMentors;
         if (mentorSearch != null) { // 검색 조건이 있을때
-            findMentors = classService.findMentor(mentorSearch);
+            findMentors = classService.findClass(mentorSearch);
         } else {  // 검색 조건이 없을때
-            findMentors = classService.findMentor();
+            findMentors = classService.findClass();
         }
         return ResponseEntity.ok().body(findMentors);
     }
@@ -36,8 +36,7 @@ public class ClassController {
         return ResponseEntity.ok().body(classService.detailClass(classNo));
     }
 
-    @PutMapping("/edit")
-    public ResponseEntity<String> updateClass(@RequestBody UpdateClassRequest updateClassRequest, @RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok().body(classService.updateClass(updateClassRequest, token));
-    }
+//    @PutMapping("/edit")
+//    public ResponseEntity<String> updateClass(@RequestBody UpdateClassRequest updateClassRequest, @RequestHeader("Authorization") String token) {
+//    }
 }

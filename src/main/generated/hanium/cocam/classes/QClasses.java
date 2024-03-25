@@ -22,17 +22,23 @@ public class QClasses extends EntityPathBase<Classes> {
 
     public static final QClasses classes = new QClasses("classes");
 
+    public final StringPath chatLink = createString("chatLink");
+
     public final StringPath classArea = createString("classArea");
 
     public final StringPath classDate = createString("classDate");
 
     public final StringPath classIntro = createString("classIntro");
 
+    public final StringPath classLevel = createString("classLevel");
+
     public final NumberPath<Long> classNo = createNumber("classNo", Long.class);
 
-    public final NumberPath<Double> classPay = createNumber("classPay", Double.class);
+    public final StringPath classTitle = createString("classTitle");
 
-    public final QSubject subjectCode;
+    public final EnumPath<ClassType> classType = createEnum("classType", ClassType.class);
+
+    public final StringPath subjectName = createString("subjectName");
 
     public final hanium.cocam.user.QUser userNo;
 
@@ -54,7 +60,6 @@ public class QClasses extends EntityPathBase<Classes> {
 
     public QClasses(Class<? extends Classes> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.subjectCode = inits.isInitialized("subjectCode") ? new QSubject(forProperty("subjectCode")) : null;
         this.userNo = inits.isInitialized("userNo") ? new hanium.cocam.user.QUser(forProperty("userNo")) : null;
     }
 

@@ -3,6 +3,7 @@ package hanium.cocam.classes;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import hanium.cocam.classes.dto.ClassListResponse;
 import hanium.cocam.classes.dto.ClassSearchCond;
 import hanium.cocam.user.User;
 import hanium.cocam.user.UserType;
@@ -12,9 +13,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static com.querydsl.core.types.Projections.constructor;
 import static hanium.cocam.classes.QClasses.classes;
-import static hanium.cocam.classes.QSubject.subject;
 import static hanium.cocam.user.QUser.user;
 
 @Repository
@@ -28,31 +30,39 @@ public class ClassQueryRepository {
     }
 
     /**
-     * MentorSearchCond이 존재 하지 않을 때는 모두 조회
+     * ClassSearchCond 존재 하지 않을 때는 모두 조회
      * @return
      */
-    public List<User> findAll() {
-        return query.select(user)
-                .from(user)
-                .join(classes).on(user.eq(classes.userNo))
-                .where(user.userType.eq(UserType.MENTOR))
+    public List<ClassListResponse> findAll() {
+        // Classes 객체 리스트 조회
+        List<Classes> classesList = query.selectFrom(classes)
+                .join(classes.userNo, user)
                 .fetch();
+
+        // Classes 객체 리스트를 ClassListResponse 객체 리스트로 변환
+        return classesList.stream()
+                .map(c -> new ClassListResponse(c.getUserNo(), c))
+                .collect(Collectors.toList());
     }
 
     /**
-     * MentorSearchCond이 존재할 때 동적쿼리
+     * ClassSearchCond 존재할 때 동적 쿼리
      * @param cond
      * @return
      */
-    public List<User> findAll(ClassSearchCond cond) {
-        return query.select(user)
-                .from(user)
-                .join(classes).on(user.eq(classes.userNo))
+    public List<ClassListResponse> findAll(ClassSearchCond cond) {
+        return query.select(constructor(ClassListResponse.class,
+                        user.userName,
+                        classes.classType,
+                        classes.classTitle,
+                        classes.classLevel))
+                .from(classes)
+                .join(classes.userNo, user)
                 .where(
-                        user.userType.eq(UserType.MENTOR),
+                        user.userType.eq(UserType.TUTOR),
                         eqUserSex(cond.getUserSex()),
-                        likeMentorUniv(cond.getMentorUniv()),
-                        likeMentorMajor(cond.getMentorMajor()),
+                        likeTutorUniv(cond.getTutorUniv()),
+                        likeTutorMajor(cond.getTutorMajor()),
                         likeSubjectName(cond.getSubjectName()),
                         likeClassArea(cond.getClassArea())
                 )
@@ -64,26 +74,23 @@ public class ClassQueryRepository {
                         classes.classArea,
                         classes.classDate,
                         classes.classIntro,
-                        subject.subjectName,
+                        classes.subjectName,
                         user.userSex,
-                        user.mentorClassNum,
-                        classes.classPay,
-                        user.mentorProfile,
-                        user.mentorIntro,
-                        user.mentorUniv,
+                        user.tutorClassNum,
+                        user.tutorProfile,
+                        user.tutorIntro,
+                        user.tutorUniv,
                         user.userNickName,
-                        user.mentorMajor,
-                        user.mentorMbti
+                        user.tutorMajor
                 )
                 .from(classes)
-                .join(user).on(user.eq(classes.userNo))
-                .join(subject).on(subject.eq(classes.subjectCode))
+                .join(classes.userNo, user)
                 .where(classes.classNo.eq(classNo))
                 .fetchOne();
 
         if (tuple == null) {
             // 클래스가 없는 경우 예외 처리
-            throw new RuntimeException("해당 사용자의 강의가 존재 하지 않습니다.");
+            throw new RuntimeException("해당 선배의 강의가 존재 하지 않습니다.");
         }
 
         return tuple;
@@ -96,23 +103,23 @@ public class ClassQueryRepository {
         return null;
     }
 
-    private BooleanExpression likeMentorUniv(String mentorUniv) {
-        if (StringUtils.hasText(mentorUniv)) {
-            return user.mentorUniv.like("%" + mentorUniv + "%");
+    private BooleanExpression likeTutorUniv(String tutorUniv) {
+        if (StringUtils.hasText(tutorUniv)) {
+            return user.tutorUniv.like("%" + tutorUniv + "%");
         }
         return null;
     }
 
-    private BooleanExpression likeMentorMajor(String mentorMajor) {
-        if (StringUtils.hasText(mentorMajor)) {
-            return user.mentorMajor.like("%" + mentorMajor + "%");
+    private BooleanExpression likeTutorMajor(String tutorMajor) {
+        if (StringUtils.hasText(tutorMajor)) {
+            return user.tutorMajor.like("%" + tutorMajor + "%");
         }
         return null;
     }
 
     private BooleanExpression likeSubjectName(String subjectName) {
         if (StringUtils.hasText(subjectName)) {
-            return classes.subjectCode.subjectName.eq(subjectName);
+            return classes.subjectName.eq(subjectName);
         }
         return null;
     }

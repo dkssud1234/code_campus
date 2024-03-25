@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClassSearchCond {
     private String userSex;
-    private String mentorUniv;
-    private String mentorMajor;
+    private String tutorUniv;
+    private String tutorMajor;
     private String subjectName;
     private String classArea;
     private String classDate;
