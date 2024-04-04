@@ -13,13 +13,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "TB_USER")
 @Builder
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNo; // 시퀀스 번호 PK
-    private String userId;
-    private String password;
-    private String userName;
+    private String userId; //  USER_ID 필드명
+    private String password; // PASSWORD
+    private String userName; // USER_NAME
     private String userEmail;
     private String userNickName;
     private String userSex;

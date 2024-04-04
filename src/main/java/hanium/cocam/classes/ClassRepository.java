@@ -7,5 +7,4 @@ import java.util.List;
 
 @Repository
 public interface ClassRepository extends JpaRepository<Classes, Long> {
-    List<Classes> findByUserNo_UserNo(Long userNo);
 }

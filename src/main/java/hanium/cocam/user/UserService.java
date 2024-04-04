@@ -56,7 +56,6 @@ public class UserService {
     }
 
     public Object login(LoginRequest request) {
-
         String userId = request.getUserId();
         String password = request.getPassword();
 
