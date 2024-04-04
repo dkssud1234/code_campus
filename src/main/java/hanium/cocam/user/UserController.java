@@ -40,10 +40,9 @@ public class UserController {
     public ResponseEntity<LoginResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
         return ResponseEntity.ok(userService.refreshToken(request).orElseThrow(() -> new RuntimeException("Refresh Token이 존재하지 않습니다.")));
     }
-
     @PostMapping("/logout")
-   public ResponseEntity<String> logout(@RequestBody LogoutRequest request) {
+    public ResponseEntity<String> logout(@RequestBody LogoutRequest request) {
        return ResponseEntity.ok(userService.logout(request));
-   }
+    }
 
 }

@@ -34,6 +34,7 @@ public class ClassQueryRepository {
      * @return
      */
     public List<ClassListResponse> findAll() {
+
         // Classes 객체 리스트 조회
         List<Classes> classesList = query.selectFrom(classes)
                 .join(classes.userNo, user)
@@ -64,6 +65,9 @@ public class ClassQueryRepository {
                         likeTutorUniv(cond.getTutorUniv()),
                         likeTutorMajor(cond.getTutorMajor()),
                         likeSubjectName(cond.getSubjectName()),
+                        likeClassLevel(cond.getClassLevel()),
+                        likeClassTitle(cond.getClassTitle()),
+                        likeClassType(cond.getClassType()),
                         likeClassArea(cond.getClassArea())
                 )
                 .fetch();
@@ -127,6 +131,27 @@ public class ClassQueryRepository {
     private BooleanExpression likeClassArea(String classArea) {
         if (StringUtils.hasText(classArea)) {
             return classes.classArea.like("%" + classArea + "%");
+        }
+        return null;
+    }
+
+    private BooleanExpression likeClassLevel(String classLevel) {
+        if (StringUtils.hasText(classLevel)) {
+            return classes.classLevel.like("%" + classLevel + "%");
+        }
+        return null;
+    }
+
+    private BooleanExpression likeClassTitle(String classTitle) {
+        if (StringUtils.hasText(classTitle)) {
+            return classes.classTitle.like("%" + classTitle + "%");
+        }
+        return null;
+    }
+
+    private BooleanExpression likeClassType(ClassType classType) {
+        if (classType != null) {
+            return classes.classType.eq(classType);
         }
         return null;
     }

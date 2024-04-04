@@ -1,5 +1,6 @@
 package hanium.cocam.classes.dto;
 
+import hanium.cocam.classes.ClassType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,7 @@ public class ClassSearchCond {
     private String subjectName;
     private String classArea;
     private String classDate;
+    private String classTitle;
+    private ClassType classType;
+    private String classLevel;
 }
