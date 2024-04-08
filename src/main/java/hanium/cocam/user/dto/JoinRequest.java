@@ -1,6 +1,7 @@
 package hanium.cocam.user.dto;
 
 import hanium.cocam.user.User;
+import hanium.cocam.user.UserSex;
 import hanium.cocam.user.UserType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,7 @@ public class JoinRequest {
     private String password;
     private String userName;
     private String userEmail;
-    private String userNickName;
-    private String userSex;
+    private UserSex userSex;
     private String userPhone;
     private UserType userType;
     private String tutorProfile; // 멘토 프로필 사진
@@ -30,7 +30,6 @@ public class JoinRequest {
                 .password(password)
                 .userName(userName)
                 .userEmail(userEmail)
-                .userNickName(userNickName)
                 .userSex(userSex)
                 .userPhone(userPhone)
                 .userType(userType)

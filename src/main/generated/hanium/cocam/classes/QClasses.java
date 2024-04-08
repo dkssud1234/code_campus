@@ -34,6 +34,8 @@ public class QClasses extends EntityPathBase<Classes> {
 
     public final NumberPath<Long> classNo = createNumber("classNo", Long.class);
 
+    public final StringPath classThumb = createString("classThumb");
+
     public final StringPath classTitle = createString("classTitle");
 
     public final EnumPath<ClassType> classType = createEnum("classType", ClassType.class);

@@ -37,13 +37,11 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath userName = createString("userName");
 
-    public final StringPath userNickName = createString("userNickName");
-
     public final NumberPath<Long> userNo = createNumber("userNo", Long.class);
 
     public final StringPath userPhone = createString("userPhone");
 
-    public final StringPath userSex = createString("userSex");
+    public final EnumPath<UserSex> userSex = createEnum("userSex", UserSex.class);
 
     public final EnumPath<UserType> userType = createEnum("userType", UserType.class);
 

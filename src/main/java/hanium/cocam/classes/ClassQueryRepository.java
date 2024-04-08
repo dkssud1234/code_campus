@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import hanium.cocam.classes.dto.ClassListResponse;
 import hanium.cocam.classes.dto.ClassSearchCond;
 import hanium.cocam.user.User;
+import hanium.cocam.user.UserSex;
 import hanium.cocam.user.UserType;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,6 @@ public class ClassQueryRepository {
         List<Classes> classesList = query.selectFrom(classes)
                 .join(classes.userNo, user)
                 .fetch();
-
         // Classes 객체 리스트를 ClassListResponse 객체 리스트로 변환
         return classesList.stream()
                 .map(c -> new ClassListResponse(c.getUserNo(), c))
@@ -53,10 +53,12 @@ public class ClassQueryRepository {
      */
     public List<ClassListResponse> findAll(ClassSearchCond cond) {
         return query.select(constructor(ClassListResponse.class,
+                        classes.classThumb,
                         user.userName,
                         classes.classType,
                         classes.classTitle,
-                        classes.classLevel))
+                        classes.classLevel,
+                        classes.classArea))
                 .from(classes)
                 .join(classes.userNo, user)
                 .where(
@@ -75,6 +77,9 @@ public class ClassQueryRepository {
 
     public Tuple detailClass(Long classNo) {
         Tuple tuple = query.select(
+                        classes.classThumb,
+                        classes.classTitle,
+                        classes.classLevel,
                         classes.classArea,
                         classes.classDate,
                         classes.classIntro,
@@ -84,7 +89,6 @@ public class ClassQueryRepository {
                         user.tutorProfile,
                         user.tutorIntro,
                         user.tutorUniv,
-                        user.userNickName,
                         user.tutorMajor
                 )
                 .from(classes)
@@ -100,8 +104,8 @@ public class ClassQueryRepository {
         return tuple;
     }
 
-    private BooleanExpression eqUserSex(String userSex) {
-        if (StringUtils.hasText(userSex)) {
+    private BooleanExpression eqUserSex(UserSex userSex) {
+        if (userSex != null) {
             return user.userSex.eq(userSex);
         }
         return null;

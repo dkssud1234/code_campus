@@ -16,6 +16,6 @@ public class LoginResponse {
     private String expiryDate;
     private Long userNo;
     private String userId;
-    private String userNickName;
+    private String userName;
 }
 

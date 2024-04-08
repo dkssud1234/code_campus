@@ -1,6 +1,7 @@
 package hanium.cocam.user.dto;
 
 import hanium.cocam.user.User;
+import hanium.cocam.user.UserSex;
 import hanium.cocam.user.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,8 +16,7 @@ public class UserResponse {
     private String userId;
     private String userName;
     private String userEmail;
-    private String userNickName;
-    private String userSex;
+    private UserSex userSex;
     private String userPhone;
     private UserType userType;
 
@@ -26,7 +26,6 @@ public class UserResponse {
         this.userId = user.getUserId();
         this.userEmail = user.getUserEmail();
         this.userName = user.getUserName();
-        this.userNickName = user.getUserNickName();
         this.userSex = user.getUserSex();
         this.userPhone = user.getUserPhone();
         this.userType = user.getUserType();
