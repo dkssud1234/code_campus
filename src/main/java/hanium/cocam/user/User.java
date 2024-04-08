@@ -15,19 +15,19 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userNo; // 시퀀스 번호 PK
-    private String userId; //  USER_ID 필드명
-    private String password; // PASSWORD
-    private String userName; // USER_NAME
+    private Long userNo; // 유저 번호
+    private String userId;
+    private String password;
+    private String userName;
     private String userEmail;
-    private String userNickName;
-    private String userSex;
+    @Enumerated(EnumType.STRING)
+    private UserSex userSex;
     private String userPhone;
     @Enumerated(EnumType.STRING)
     private UserType userType;
-    private String tutorProfile; // 멘토 프로필 사진
-    private String tutorUniv; // 멘토 소속 대학
-    private String tutorClassNum; // 멘토 학번(20학번, 21학번 ...)
-    private String tutorMajor; // 멘토 학과
-    private String tutorIntro; // 멘토 소개글 (자유 형식)
+    private String tutorProfile; // 선배 프로필 사진
+    private String tutorUniv; // 선배 소속 대학
+    private String tutorClassNum; // 선배 학번(20학번, 21학번 ...)
+    private String tutorMajor; // 선배 학과
+    private String tutorIntro; // 선배 소개글 (자유 형식)
 }

@@ -64,7 +64,7 @@ public class UserService {
 
         // 사용자가 존재하고 비밀번호가 일치하는 경우에만 인증 성공
         if (findUser.isPresent() && passwordEncoder.matches(password, findUser.get().getPassword())) {
-            String userNickName = findUser.get().getUserNickName();
+            String userName = findUser.get().getUserName();
             Long userNo = findUser.get().getUserNo();
 
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(request.getUserId());
@@ -76,7 +76,7 @@ public class UserService {
                     .expiryDate(JwtUtil.getExpirationDate(accessToken, secretKey))
                     .userNo(userNo)
                     .userId(userId)
-                    .userNickName(userNickName)
+                    .userName(userName)
                     .build();
         } else {
             return new LoginFailResponse("입력하신 아이디 또는 비밀번호를 확인해주세요.");
@@ -107,7 +107,6 @@ public class UserService {
                             .expiryDate(JwtUtil.getExpirationDate(accessToken, secretKey))
                             .userNo(user.getUserNo())
                             .userId(user.getUserId())
-                            .userNickName(user.getUserNickName())
                             .build();
                 });
     }
