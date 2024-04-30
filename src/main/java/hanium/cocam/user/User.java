@@ -1,5 +1,6 @@
 package hanium.cocam.user;
 
+import hanium.cocam.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,24 +11,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @AllArgsConstructor
-@Table(name = "TB_USER")
+@Table(name = "TB_USERS")
 @Builder
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_no")
     private Long userNo; // 유저 번호
     private String userId;
     private String password;
     private String userName;
     private String userEmail;
-    @Enumerated(EnumType.STRING)
     private UserSex userSex;
     private String userPhone;
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
-    private String tutorProfile; // 선배 프로필 사진
-    private String tutorUniv; // 선배 소속 대학
-    private String tutorClassNum; // 선배 학번(20학번, 21학번 ...)
-    private String tutorMajor; // 선배 학과
-    private String tutorIntro; // 선배 소개글 (자유 형식)
+    private String userProfile; // 유저 프로필 (기본사진)
+    private UserType userType; // 유저 타입(대학생, 고등학생, 중학생)
+    private String userLang; // 후배 배울 언어 (리액트, 스프링, 자바, ...)
+    private String userLevel; // 후배 레벨 (입문, 초급, 중급이상)
 }

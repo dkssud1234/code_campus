@@ -19,27 +19,31 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
+    public final hanium.cocam.base.QBaseEntity _super = new hanium.cocam.base.QBaseEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    //inherited
+    public final NumberPath<Long> id = _super.id;
+
     public final StringPath password = createString("password");
-
-    public final StringPath tutorClassNum = createString("tutorClassNum");
-
-    public final StringPath tutorIntro = createString("tutorIntro");
-
-    public final StringPath tutorMajor = createString("tutorMajor");
-
-    public final StringPath tutorProfile = createString("tutorProfile");
-
-    public final StringPath tutorUniv = createString("tutorUniv");
 
     public final StringPath userEmail = createString("userEmail");
 
     public final StringPath userId = createString("userId");
+
+    public final StringPath userLang = createString("userLang");
+
+    public final StringPath userLevel = createString("userLevel");
 
     public final StringPath userName = createString("userName");
 
     public final NumberPath<Long> userNo = createNumber("userNo", Long.class);
 
     public final StringPath userPhone = createString("userPhone");
+
+    public final StringPath userProfile = createString("userProfile");
 
     public final EnumPath<UserSex> userSex = createEnum("userSex", UserSex.class);
 
