@@ -1,13 +1,11 @@
 package hanium.cocam.user;
 
-import hanium.cocam.refresh.RefreshTokenService;
 import hanium.cocam.user.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,8 +16,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody JoinRequest request) {
-        return ResponseEntity.ok().body(userService.signup(request));
+    public ResponseEntity<String> signup(@RequestBody SignupRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.signup(request));
+    }
+
+    @PostMapping("/signup/profile")
+    public ResponseEntity<String> addProfile(@RequestBody AddProfileRequest request) {
+        return ResponseEntity.ok().body(userService.addProfile(request));
     }
 
     @PostMapping("/login")

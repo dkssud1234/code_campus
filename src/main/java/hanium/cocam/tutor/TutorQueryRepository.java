@@ -5,10 +5,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import hanium.cocam.tutor.dto.TutorSearchCond;
-import hanium.cocam.user.Category;
-import hanium.cocam.user.User;
-import hanium.cocam.user.UserSex;
-import hanium.cocam.user.UserType;
+import hanium.cocam.user.*;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -18,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static hanium.cocam.user.QProfile.profile;
 import static hanium.cocam.user.QUser.user;
 
 @Repository
@@ -60,7 +58,7 @@ public class TutorQueryRepository {
                         user.userType.eq(UserType.TUTOR),
                         eqUserSex(cond.getUserSex()),
                         likeClassArea(cond.getClassArea()),
-                        likeCategory(cond.getCategory()),
+                        likeKeyword(cond.getKeyword()),
                         likeLevel(cond.getLevel())
                 )
                 .fetch();
@@ -71,11 +69,11 @@ public class TutorQueryRepository {
         String orderCondition = cond.getOrderCondition();
 
         if(Objects.isNull(orderCondition)){
-            orderSpecifiers.add(new OrderSpecifier(Order.DESC, user.tutorLikes));
+            orderSpecifiers.add(new OrderSpecifier(Order.DESC, profile.tutorLikes));
         } else if(orderCondition.equals("NEW")){
             orderSpecifiers.add(new OrderSpecifier(Order.DESC, user.createdAt));
         } else if(orderCondition.equals("POP")){
-            orderSpecifiers.add(new OrderSpecifier(Order.DESC, user.tutorLikes));
+            orderSpecifiers.add(new OrderSpecifier(Order.DESC, profile.tutorLikes));
         }
         return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
     }
@@ -89,21 +87,21 @@ public class TutorQueryRepository {
 
     private BooleanExpression likeLevel(String level) {
         if (StringUtils.hasText(level)) {
-            return user.level.like("%" + level + "%");
+            return profile.level.like("%" + level + "%");
         }
         return null;
     }
 
-    private BooleanExpression likeCategory(Category category) {
-        if (category != null && !category.equals("")) {
-            return user.category.eq(category);
+    private BooleanExpression likeKeyword(String keyword) {
+        if (StringUtils.hasText(keyword)) {
+            return profile.keyword.like("%" + keyword + "%");
         }
         return null;
     }
 
     private BooleanExpression likeClassArea(String classArea) {
         if (StringUtils.hasText(classArea)) {
-            return user.classArea.like("%" + classArea + "%");
+            return profile.classArea.like("%" + classArea + "%");
         }
         return null;
     }
