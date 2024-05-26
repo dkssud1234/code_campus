@@ -1,5 +1,5 @@
-package hanium.cocam.classes;
-
-public enum ClassType {
-    ON, OFF, BOTH
-}
+//package hanium.cocam.classes;
+//
+//public enum ClassType {
+//    ON, OFF, BOTH
+//}
