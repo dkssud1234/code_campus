@@ -5,17 +5,23 @@ import hanium.cocam.refresh.RefreshToken;
 import hanium.cocam.refresh.RefreshTokenService;
 import hanium.cocam.user.dto.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -25,6 +31,8 @@ public class UserService {
     @Value("${jwt.secret}")
     private String secretKey;
     private Long expiredMs = 1000 * 60 * 60 * 1L;  // 토큰 유효시간 1시간
+
+    private static String FILE_DIR_PATH = "/uploads";
 
     public String signup(JoinRequest request) {
         try {
@@ -44,7 +52,7 @@ public class UserService {
             return e.getMessage();
         } catch (Exception e) {
             // 그 외의 예외 발생 시에는 일반적인 오류 메시지 반환
-            return "회원가입 중 오류가 발생했습니다.";
+            return "회원가입 중 오류가 발생했습니다. 오류내용 : " + e.getMessage();
         }
     }
 
@@ -110,7 +118,6 @@ public class UserService {
                             .build();
                 });
     }
-
     public String logout(LogoutRequest request) {
         return refreshTokenService.deleteByToken(request.getRefreshToken());
     }

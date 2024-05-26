@@ -5,7 +5,9 @@ import hanium.cocam.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -40,6 +42,7 @@ public class UserController {
     public ResponseEntity<LoginResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
         return ResponseEntity.ok(userService.refreshToken(request).orElseThrow(() -> new RuntimeException("Refresh Token이 존재하지 않습니다.")));
     }
+
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestBody LogoutRequest request) {
        return ResponseEntity.ok(userService.logout(request));

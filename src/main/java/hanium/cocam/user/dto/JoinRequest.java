@@ -1,11 +1,15 @@
 package hanium.cocam.user.dto;
 
+import hanium.cocam.user.Category;
 import hanium.cocam.user.User;
 import hanium.cocam.user.UserSex;
 import hanium.cocam.user.UserType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
@@ -18,11 +22,20 @@ public class JoinRequest {
     private UserSex userSex;
     private String userPhone;
     private UserType userType;
-    private String tutorProfile; // 멘토 프로필 사진
-    private String tutorUniv; // 멘토 소속 대학
-    private String tutorClassNum; // 멘토 학번(20학번, 21학번 ...)
-    private String tutorMajor; // 멘토 학과
-    private String tutorIntro; // 멘토 소개글 (자유 형식)
+    private String tutorProfile;
+    private String tutorUniv;
+    private String tutorMajor;
+    private String tutorClassNum;
+    private String classArea;
+    private String classType;
+    private Category category;
+    private String level;
+    private String lang;
+    private String tutorIntro;
+    private String chatLink;
+    private String portLink;
+    private int tutorLikes=0;
+    private String authYN = "N";
 
     public User toEntity() {
         return User.builder()
@@ -35,9 +48,18 @@ public class JoinRequest {
                 .userType(userType)
                 .tutorProfile(tutorProfile)
                 .tutorUniv(tutorUniv)
-                .tutorClassNum(tutorClassNum)
                 .tutorMajor(tutorMajor)
+                .tutorClassNum(tutorClassNum)
+                .classArea(classArea)
+                .classType(classType)
+                .category(category)
+                .lang(lang)
+                .level(level)
                 .tutorIntro(tutorIntro)
+                .chatLink(chatLink)
+                .portLink(portLink)
+                .tutorLikes(tutorLikes)
+                .authYN(authYN)
                 .build();
     }
 }

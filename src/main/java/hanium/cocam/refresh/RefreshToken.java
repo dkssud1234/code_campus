@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
@@ -23,5 +25,6 @@ public class RefreshToken {
     private Instant expiryDate;
     @OneToOne
     @JoinColumn(name = "user_no")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 }
