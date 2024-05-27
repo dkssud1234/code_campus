@@ -10,13 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,16 +24,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenService refreshTokenService;
+    private final ProfileRepository profileRepository;
 
     @Value("${jwt.secret}")
     private String secretKey;
     private Long expiredMs = 1000 * 60 * 60 * 1L;  // 토큰 유효시간 1시간
 
-    private static String FILE_DIR_PATH = "/uploads";
-
-    public String signup(JoinRequest request) {
+    public String signup(SignupRequest request) {
         try {
-            // 아이디 중복 검사
+            // 이메일 중복 검사
             isDuplicate(request.getUserId());
 
             // 비밀번호 암호화
@@ -46,7 +42,7 @@ public class UserService {
             // 회원 저장
             userRepository.save(request.toEntity());
 
-            return "회원가입이 완료되었습니다.";
+            return "개인정보 등록 완료";
         } catch (IllegalArgumentException e) {
             // 중복된 이메일로 인한 예외 발생 시에는 그대로 전달
             return e.getMessage();
@@ -54,6 +50,13 @@ public class UserService {
             // 그 외의 예외 발생 시에는 일반적인 오류 메시지 반환
             return "회원가입 중 오류가 발생했습니다. 오류내용 : " + e.getMessage();
         }
+    }
+
+    public String addProfile(AddProfileRequest request) {
+        Long userNo = request.getUserNo();
+        User user = userRepository.findById(userNo).orElseThrow(() -> new NoSuchElementException("not found User"));
+        profileRepository.save(request.toEntity(user));
+        return "프로필 등록 완료";
     }
 
     private void isDuplicate(String userId) {

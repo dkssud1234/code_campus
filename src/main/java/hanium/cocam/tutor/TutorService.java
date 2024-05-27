@@ -20,12 +20,14 @@ public class TutorService {
     private String secretKey;
 
     public List<TutorListResponse> findTutor() {
-        List<TutorListResponse> findTutors = tutorQueryRepository.findAll().stream().map(TutorListResponse::new).toList();
+        List<TutorListResponse> findTutors = tutorQueryRepository.findAll().stream()
+            .map(user -> new TutorListResponse(user, user.getProfile())).toList();
         return findTutors;
     }
 
     public List<TutorListResponse> findTutor(TutorSearchCond tutorSearchCond) {
-        List<TutorListResponse> mentors = tutorQueryRepository.findAll(tutorSearchCond).stream().map(TutorListResponse::new).toList();
-        return mentors;
+        List<TutorListResponse> findTutors = tutorQueryRepository.findAll(tutorSearchCond).stream()
+            .map(user -> new TutorListResponse(user, user.getProfile())).toList();
+        return findTutors;
     }
 }

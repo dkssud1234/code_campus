@@ -13,6 +13,6 @@ public class TutorSearchCond {
     private UserSex userSex;
     private String level;
     private String classArea;
-    private Category category;
+    private String keyword;
     private String orderCondition;
 }

@@ -26,7 +26,7 @@ public class SecurityConfig {
 
     private static final String[] WHITE_LIST_URL = {
             "/api/users/login", // 요청 허가 url 목록
-            "/api/users/signup",
+            "/api/users/signup/**",
             "/api/users/refreshToken",
             "/h2-console/**"
     };
