@@ -16,20 +16,21 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "TB_PROFILE")
 @Builder
 public class Profile {
+
+    // ============== 선후배 공통 ================
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long profileNo;
-
     @OneToOne
     @JoinColumn(name = "user_no")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-
     @Enumerated(EnumType.STRING)
     private UserType userType;
     private String keyword; // 키워드
     private String level; // 수업 레벨
-    private String school; // 소속 대학
+    private String school; // 소속 학교(선배: 대학교 한정, 선배: 중~대학교)
+    // =========================================
 
     // ============ 선배에 해당하는 부분 ============
     private String classArea;
