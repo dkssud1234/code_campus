@@ -1,6 +1,6 @@
-package hanium.cocam.Mentorship;
+package hanium.cocam.mentorship;
 
-import hanium.cocam.Mentorship.dto.MentorshipRequest;
+import hanium.cocam.mentorship.dto.MentorshipRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

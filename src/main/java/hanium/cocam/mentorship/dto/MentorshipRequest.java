@@ -1,6 +1,6 @@
-package hanium.cocam.Mentorship.dto;
+package hanium.cocam.mentorship.dto;
 
-import hanium.cocam.Mentorship.Mentorship;
+import hanium.cocam.mentorship.Mentorship;
 import hanium.cocam.user.Category;
 import hanium.cocam.user.User;
 import lombok.AllArgsConstructor;

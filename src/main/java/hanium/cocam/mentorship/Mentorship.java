@@ -1,8 +1,7 @@
-package hanium.cocam.Mentorship;
+package hanium.cocam.mentorship;
 
 import hanium.cocam.user.Category;
 import hanium.cocam.user.User;
-import hanium.cocam.user.UserType;
 import jakarta.persistence.*;
 
 import lombok.*;

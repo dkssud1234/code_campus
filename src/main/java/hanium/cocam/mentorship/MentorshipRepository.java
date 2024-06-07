@@ -1,4 +1,4 @@
-package hanium.cocam.Mentorship;
+package hanium.cocam.mentorship;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

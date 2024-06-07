@@ -1,6 +1,6 @@
-package hanium.cocam.Mentorship;
+package hanium.cocam.mentorship;
 
-import hanium.cocam.Mentorship.dto.MentorshipRequest;
+import hanium.cocam.mentorship.dto.MentorshipRequest;
 import hanium.cocam.user.User;
 import hanium.cocam.user.UserRepository;
 import jakarta.transaction.Transactional;
