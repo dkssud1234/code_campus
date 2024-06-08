@@ -16,12 +16,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody SignupRequest request) {
+    public ResponseEntity<Object> signup(@RequestBody SignupRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.signup(request));
     }
 
     @PostMapping("/signup/profile")
-    public ResponseEntity<String> addProfile(@RequestBody AddProfileRequest request) {
+    public ResponseEntity<Object> addProfile(@RequestBody AddProfileRequest request) {
         return ResponseEntity.ok().body(userService.addProfile(request));
     }
 

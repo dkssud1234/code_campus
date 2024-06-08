@@ -30,10 +30,10 @@ public class UserService {
     private String secretKey;
     private Long expiredMs = 1000 * 60 * 60 * 1L;  // 토큰 유효시간 1시간
 
-    public String signup(SignupRequest request) {
+    public Object signup(SignupRequest request) {
         try {
             // 이메일 중복 검사
-            isDuplicate(request.getUserId());
+            isDuplicateUserId(request.getUserId());
 
             // 비밀번호 암호화
             String encodedPassword = passwordEncoder.encode(request.getPassword());
@@ -41,8 +41,8 @@ public class UserService {
 
             // 회원 저장
             userRepository.save(request.toEntity());
-
-            return "개인정보 등록 완료";
+            User findUser = userRepository.findByUserId(request.getUserId()).orElseThrow(() -> new IllegalArgumentException("not found userid : " + request.getUserId()));
+            return new UserResponse(findUser);
         } catch (IllegalArgumentException e) {
             // 중복된 이메일로 인한 예외 발생 시에는 그대로 전달
             return e.getMessage();
@@ -52,14 +52,29 @@ public class UserService {
         }
     }
 
-    public String addProfile(AddProfileRequest request) {
-        Long userNo = request.getUserNo();
-        User user = userRepository.findById(userNo).orElseThrow(() -> new NoSuchElementException("not found User"));
-        profileRepository.save(request.toEntity(user));
-        return "프로필 등록 완료";
+    public Object addProfile(AddProfileRequest request) {
+        try {
+            Long userNo = request.getUserNo();
+            User user = userRepository.findById(userNo).orElseThrow(() -> new NoSuchElementException("not found User"));
+            isDuplicateUserNo(user);
+            Profile savedUserProfile = profileRepository.save(request.toEntity(user));
+
+            return new AddProfileResponse(savedUserProfile);
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        } catch (Exception e) {
+            return "프로필 등록 중 오류가 발생했습니다. 내용: " + e.getMessage();
+        }
     }
 
-    private void isDuplicate(String userId) {
+    private void isDuplicateUserNo(User user) {
+        Optional<Profile> findProfileUserNo = profileRepository.findByUser(user);
+        if (findProfileUserNo.isPresent()) {
+            throw new IllegalArgumentException("이미 프로필이 등록된 회원입니다.");
+        }
+    }
+
+    private void isDuplicateUserId(String userId) {
         Optional<User> findUserId = userRepository.findByUserId(userId);
         if (findUserId.isPresent()) {
             throw new IllegalArgumentException("중복된 아이디 입니다.");
