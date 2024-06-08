@@ -28,7 +28,7 @@ public class UserService {
 
     @Value("${jwt.secret}")
     private String secretKey;
-    private Long expiredMs = 1000 * 60 * 60 * 1L;  // 토큰 유효시간 1시간
+    private Long expiredMs = 1000 * 60 * 60 * 8790L;  // 토큰 유효시간 1년(테스트용)
 
     public Object signup(SignupRequest request) {
         try {

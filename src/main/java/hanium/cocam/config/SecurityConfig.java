@@ -27,8 +27,7 @@ public class SecurityConfig {
     private static final String[] WHITE_LIST_URL = {
             "/api/users/login", // 요청 허가 url 목록
             "/api/users/signup/**",
-            "/api/users/refreshToken",
-            "/h2-console/**"
+            "/api/users/refreshToken"
     };
 
     @Bean
@@ -44,8 +43,7 @@ public class SecurityConfig {
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .addFilterBefore(new JwtFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
-                .headers()
-                .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
+                .headers();
         return http.build();
     }
 }
