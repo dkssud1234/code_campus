@@ -15,7 +15,7 @@ public class LoginResponse {
     private String refreshToken;
     private String expiryDate;
     private Long userNo;
-    private String userId;
+    private String userEmail;
     private String userName;
 }
 

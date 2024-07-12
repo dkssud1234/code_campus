@@ -25,9 +25,7 @@ public class SecurityConfig {
     private String secretKey;
 
     private static final String[] WHITE_LIST_URL = {
-            "/api/users/login", // 요청 허가 url 목록
-            "/api/users/signup/**",
-            "/api/users/refreshToken"
+            "/api/users/**"
     };
 
     @Bean
@@ -39,7 +37,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest()
+                                .authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .addFilterBefore(new JwtFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)

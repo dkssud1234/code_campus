@@ -17,10 +17,9 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNo; // 유저 번호
-    private String userId;
+    private String userEmail;
     private String password;
     private String userName;
-    private String userEmail;
     @Enumerated(EnumType.STRING)
     private UserSex userSex;
     private String userPhone;

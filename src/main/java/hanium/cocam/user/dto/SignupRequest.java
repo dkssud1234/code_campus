@@ -11,20 +11,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 public class SignupRequest {
-    private String userId;
+    private String userEmail;
     private String password;
     private String userName;
-    private String userEmail;
     private UserSex userSex;
     private String userPhone;
     private UserType userType;
 
     public User toEntity() {
         return User.builder()
-                .userId(userId)
+                .userEmail(userEmail)
                 .password(password)
                 .userName(userName)
-                .userEmail(userEmail)
                 .userSex(userSex)
                 .userPhone(userPhone)
                 .userType(userType)
