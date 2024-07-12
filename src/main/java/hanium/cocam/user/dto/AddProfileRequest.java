@@ -16,7 +16,7 @@ import lombok.Setter;
 public class AddProfileRequest {
     private Long userNo;
     private UserType userType;
-    private String keyword;
+    private String[] keyword;
     private String level;
     private String school;
     private String classType;
@@ -31,10 +31,11 @@ public class AddProfileRequest {
     private String studentType; // 학생 구분(대학생, 고등학생, 중학생)
 
     public Profile toEntity(User user) {
+        String keywordString = String.join(",", this.keyword);
         return Profile.builder()
                 .user(user)
                 .userType(userType)
-                .keyword(keyword)
+                .keyword(keywordString)
                 .classType(classType)
                 .classArea(classArea)
                 .level(level)

@@ -16,7 +16,7 @@ public class AddProfileResponse {
     private Long profileNo;
     private Long userNo;
     private UserType userType;
-    private String keyword; // 키워드
+    private String[] keyword; // 키워드
     private String level; // 수업 레벨
     private String school; // 소속 학교(선배: 대학교 한정, 선배: 중~대학교)
     private String classArea;
@@ -36,7 +36,7 @@ public class AddProfileResponse {
         this.profileNo = profile.getProfileNo();
         this.userNo = profile.getUser().getUserNo();
         this.userType = profile.getUserType();
-        this.keyword = profile.getKeyword();
+        this.keyword = profile.getKeywordArray();
         this.level = profile.getLevel();
         this.school = profile.getSchool();
         this.classArea = profile.getClassArea();
