@@ -1,7 +1,6 @@
 package hanium.cocam.tutor.dto;
 
-import hanium.cocam.user.Category;
-import hanium.cocam.user.UserSex;
+import hanium.cocam.user.entity.UserSex;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

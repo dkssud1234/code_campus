@@ -1,13 +1,11 @@
 package hanium.cocam.user.dto;
 
-import hanium.cocam.user.Profile;
-import hanium.cocam.user.User;
-import hanium.cocam.user.UserSex;
-import hanium.cocam.user.UserType;
+import hanium.cocam.user.entity.Profile;
+import hanium.cocam.user.entity.User;
+import hanium.cocam.user.entity.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @Getter

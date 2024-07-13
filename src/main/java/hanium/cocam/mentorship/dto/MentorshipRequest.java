@@ -1,8 +1,8 @@
 package hanium.cocam.mentorship.dto;
 
 import hanium.cocam.mentorship.Mentorship;
-import hanium.cocam.user.Category;
-import hanium.cocam.user.User;
+import hanium.cocam.user.entity.Category;
+import hanium.cocam.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

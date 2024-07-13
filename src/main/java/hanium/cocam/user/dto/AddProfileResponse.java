@@ -1,13 +1,11 @@
 package hanium.cocam.user.dto;
 
-import hanium.cocam.user.Profile;
-import hanium.cocam.user.User;
-import hanium.cocam.user.UserType;
+import hanium.cocam.user.entity.Profile;
+import hanium.cocam.user.entity.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Getter
 @NoArgsConstructor

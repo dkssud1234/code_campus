@@ -1,8 +1,7 @@
 package hanium.cocam.tutor.dto;
 
-import hanium.cocam.user.Category;
-import hanium.cocam.user.Profile;
-import hanium.cocam.user.User;
+import hanium.cocam.user.entity.Profile;
+import hanium.cocam.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

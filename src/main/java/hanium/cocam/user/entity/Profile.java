@@ -1,6 +1,5 @@
-package hanium.cocam.user;
+package hanium.cocam.user.entity;
 
-import hanium.cocam.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

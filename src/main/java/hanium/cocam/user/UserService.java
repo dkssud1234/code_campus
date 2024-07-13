@@ -4,6 +4,8 @@ import hanium.cocam.jwt.JwtUtil;
 import hanium.cocam.refresh.RefreshToken;
 import hanium.cocam.refresh.RefreshTokenService;
 import hanium.cocam.user.dto.*;
+import hanium.cocam.user.entity.Profile;
+import hanium.cocam.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,6 +59,8 @@ public class UserService {
             Long userNo = request.getUserNo();
             User user = userRepository.findById(userNo).orElseThrow(() -> new NoSuchElementException("not found User"));
             isDuplicateUserNo(user);
+
+
             Profile savedUserProfile = profileRepository.save(request.toEntity(user));
 
             return new AddProfileResponse(savedUserProfile);

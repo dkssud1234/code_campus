@@ -1,4 +1,4 @@
-package hanium.cocam.user;
+package hanium.cocam.user.entity;
 
 import hanium.cocam.base.BaseEntity;
 import jakarta.persistence.*;

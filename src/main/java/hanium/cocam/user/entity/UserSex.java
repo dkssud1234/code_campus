@@ -1,4 +1,4 @@
-package hanium.cocam.user;
+package hanium.cocam.user.entity;
 
 public enum UserSex {
     M, F
