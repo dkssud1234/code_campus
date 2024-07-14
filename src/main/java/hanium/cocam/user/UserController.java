@@ -30,12 +30,6 @@ public class UserController {
         return ResponseEntity.ok().body(userService.login(request));
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<UserResponse>> findAll() {
-        List<UserResponse> users = userService.findAll();
-        return ResponseEntity.ok().body(users);
-    }
-
     @GetMapping("/{userNo}")
     public ResponseEntity<UserResponse> findUser(@PathVariable(name = "userNo") Long userNo) {
         return ResponseEntity.ok(userService.findUser(userNo));

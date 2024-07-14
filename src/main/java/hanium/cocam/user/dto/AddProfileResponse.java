@@ -1,13 +1,11 @@
 package hanium.cocam.user.dto;
 
-import hanium.cocam.user.Profile;
-import hanium.cocam.user.User;
-import hanium.cocam.user.UserType;
+import hanium.cocam.user.entity.Profile;
+import hanium.cocam.user.entity.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Getter
 @NoArgsConstructor
@@ -16,7 +14,7 @@ public class AddProfileResponse {
     private Long profileNo;
     private Long userNo;
     private UserType userType;
-    private String keyword; // 키워드
+    private String[] keyword; // 키워드
     private String level; // 수업 레벨
     private String school; // 소속 학교(선배: 대학교 한정, 선배: 중~대학교)
     private String classArea;
@@ -36,7 +34,7 @@ public class AddProfileResponse {
         this.profileNo = profile.getProfileNo();
         this.userNo = profile.getUser().getUserNo();
         this.userType = profile.getUserType();
-        this.keyword = profile.getKeyword();
+        this.keyword = profile.getKeywordArray();
         this.level = profile.getLevel();
         this.school = profile.getSchool();
         this.classArea = profile.getClassArea();

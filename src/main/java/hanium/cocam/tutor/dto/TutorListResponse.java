@@ -1,8 +1,7 @@
 package hanium.cocam.tutor.dto;
 
-import hanium.cocam.user.Category;
-import hanium.cocam.user.Profile;
-import hanium.cocam.user.User;
+import hanium.cocam.user.entity.Profile;
+import hanium.cocam.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +14,7 @@ public class TutorListResponse {
     private String userName;
     private String tutorProfileImg;
     private String school;
-    private String keyword;
+    private String[] keyword;
     private String level;
     private String classArea;
     private int tutorLikes;
@@ -25,7 +24,7 @@ public class TutorListResponse {
         this.userName = user.getUserName();
         this.tutorProfileImg = profile.getTutorProfileImg();
         this.school = profile.getSchool();
-        this.keyword = profile.getKeyword();
+        this.keyword = profile.getKeywordArray();
         this.level = profile.getLevel();
         this.classArea = profile.getClassArea();
         this.tutorLikes = profile.getTutorLikes();

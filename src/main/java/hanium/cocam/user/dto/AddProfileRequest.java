@@ -1,13 +1,11 @@
 package hanium.cocam.user.dto;
 
-import hanium.cocam.user.Profile;
-import hanium.cocam.user.User;
-import hanium.cocam.user.UserSex;
-import hanium.cocam.user.UserType;
+import hanium.cocam.user.entity.Profile;
+import hanium.cocam.user.entity.User;
+import hanium.cocam.user.entity.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @Getter
@@ -16,7 +14,7 @@ import lombok.Setter;
 public class AddProfileRequest {
     private Long userNo;
     private UserType userType;
-    private String keyword;
+    private String[] keyword;
     private String level;
     private String school;
     private String classType;
@@ -31,10 +29,11 @@ public class AddProfileRequest {
     private String studentType; // 학생 구분(대학생, 고등학생, 중학생)
 
     public Profile toEntity(User user) {
+        String keywordString = String.join(",", this.keyword);
         return Profile.builder()
                 .user(user)
                 .userType(userType)
-                .keyword(keyword)
+                .keyword(keywordString)
                 .classType(classType)
                 .classArea(classArea)
                 .level(level)

@@ -1,4 +1,4 @@
-package hanium.cocam.user;
+package hanium.cocam.user.entity;
 
 public enum Category {
     BE, // 백엔드

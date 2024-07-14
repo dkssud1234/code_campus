@@ -1,6 +1,5 @@
-package hanium.cocam.user;
+package hanium.cocam.user.entity;
 
-import hanium.cocam.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,4 +48,8 @@ public class Profile {
     private String studentType; // 학생 구분(대학생, 고등학생, 중학생)
     // =========================================
 
+    // keyword 필드의 String[] 변환 메서드 추가
+    public String[] getKeywordArray() {
+        return this.keyword != null ? this.keyword.split(",") : new String[]{};
+    }
 }

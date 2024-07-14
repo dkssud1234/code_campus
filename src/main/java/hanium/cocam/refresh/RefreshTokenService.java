@@ -19,11 +19,11 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
 
-    public RefreshToken createRefreshToken(String userId) {
+    public RefreshToken createRefreshToken(String userEmail) {
         ZonedDateTime expiryDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).plus(14, ChronoUnit.DAYS);
 
         RefreshToken refreshToken = RefreshToken.builder()
-                .user(userRepository.findByUserId(userId).get())
+                .user(userRepository.findByUserEmail(userEmail).get())
                 .refreshToken(UUID.randomUUID().toString())
                 .expiryDate(expiryDateTime.toInstant())
                 .build();

@@ -4,6 +4,8 @@ import hanium.cocam.jwt.JwtUtil;
 import hanium.cocam.refresh.RefreshToken;
 import hanium.cocam.refresh.RefreshTokenService;
 import hanium.cocam.user.dto.*;
+import hanium.cocam.user.entity.Profile;
+import hanium.cocam.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +35,7 @@ public class UserService {
     public Object signup(SignupRequest request) {
         try {
             // 이메일 중복 검사
-            isDuplicateUserId(request.getUserId());
+            isDuplicateUserId(request.getUserEmail());
 
             // 비밀번호 암호화
             String encodedPassword = passwordEncoder.encode(request.getPassword());
@@ -41,7 +43,7 @@ public class UserService {
 
             // 회원 저장
             userRepository.save(request.toEntity());
-            User findUser = userRepository.findByUserId(request.getUserId()).orElseThrow(() -> new IllegalArgumentException("not found userid : " + request.getUserId()));
+            User findUser = userRepository.findByUserEmail(request.getUserEmail()).orElseThrow(() -> new IllegalArgumentException("not found userEmail : " + request.getUserEmail()));
             return new UserResponse(findUser);
         } catch (IllegalArgumentException e) {
             // 중복된 이메일로 인한 예외 발생 시에는 그대로 전달
@@ -57,6 +59,8 @@ public class UserService {
             Long userNo = request.getUserNo();
             User user = userRepository.findById(userNo).orElseThrow(() -> new NoSuchElementException("not found User"));
             isDuplicateUserNo(user);
+
+
             Profile savedUserProfile = profileRepository.save(request.toEntity(user));
 
             return new AddProfileResponse(savedUserProfile);
@@ -74,34 +78,34 @@ public class UserService {
         }
     }
 
-    private void isDuplicateUserId(String userId) {
-        Optional<User> findUserId = userRepository.findByUserId(userId);
+    private void isDuplicateUserId(String userEmail) {
+        Optional<User> findUserId = userRepository.findByUserEmail(userEmail);
         if (findUserId.isPresent()) {
-            throw new IllegalArgumentException("중복된 아이디 입니다.");
+            throw new IllegalArgumentException("중복된 이메일 입니다.");
         }
     }
 
     public Object login(LoginRequest request) {
-        String userId = request.getUserId();
+        String userEmail = request.getUserEmail();
         String password = request.getPassword();
 
         // 존재하는 사용자인지 확인
-        Optional<User> findUser = userRepository.findByUserId(userId);
+        Optional<User> findUser = userRepository.findByUserEmail(userEmail);
 
         // 사용자가 존재하고 비밀번호가 일치하는 경우에만 인증 성공
         if (findUser.isPresent() && passwordEncoder.matches(password, findUser.get().getPassword())) {
             String userName = findUser.get().getUserName();
             Long userNo = findUser.get().getUserNo();
 
-            RefreshToken refreshToken = refreshTokenService.createRefreshToken(request.getUserId());
-            String accessToken = JwtUtil.createJwt(userId, userNo, secretKey, expiredMs);
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(request.getUserEmail());
+            String accessToken = JwtUtil.createJwt(userEmail, userNo, secretKey, expiredMs);
 
             return LoginResponse.builder()
                     .accessToken(accessToken)
                     .refreshToken(refreshToken.getRefreshToken())
                     .expiryDate(JwtUtil.getExpirationDate(accessToken, secretKey))
                     .userNo(userNo)
-                    .userId(userId)
+                    .userEmail(userEmail)
                     .userName(userName)
                     .build();
         } else {
@@ -126,13 +130,13 @@ public class UserService {
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
                 .map(user -> {
-                    String accessToken = JwtUtil.createJwt(user.getUserId(), user.getUserNo(), secretKey, expiredMs);
+                    String accessToken = JwtUtil.createJwt(user.getUserEmail(), user.getUserNo(), secretKey, expiredMs);
                     return LoginResponse.builder()
                             .accessToken(accessToken)
                             .refreshToken(request.getRefreshToken())
                             .expiryDate(JwtUtil.getExpirationDate(accessToken, secretKey))
                             .userNo(user.getUserNo())
-                            .userId(user.getUserId())
+                            .userEmail(user.getUserEmail())
                             .build();
                 });
     }
