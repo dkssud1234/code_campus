@@ -45,4 +45,10 @@ public class UserController {
        return ResponseEntity.ok(userService.logout(request));
     }
 
+    @PostMapping("/test")
+    public ResponseEntity<String> createUserProfile(@RequestBody UserProfileDto userProfileDto) {
+        userService.saveUserProfile(userProfileDto);
+        return ResponseEntity.ok().build();
+    }
+
 }
