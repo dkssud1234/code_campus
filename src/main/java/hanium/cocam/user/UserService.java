@@ -6,6 +6,8 @@ import hanium.cocam.refresh.RefreshTokenService;
 import hanium.cocam.user.dto.*;
 import hanium.cocam.user.entity.Profile;
 import hanium.cocam.user.entity.User;
+import hanium.cocam.user.entity.UserSex;
+import hanium.cocam.user.entity.UserType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -142,5 +144,39 @@ public class UserService {
     }
     public String logout(LogoutRequest request) {
         return refreshTokenService.deleteByToken(request.getRefreshToken());
+    }
+
+    //추가
+    public void saveUserProfile(UserProfileDto userProfileDto) {
+        User user = User.builder()
+                .userEmail(userProfileDto.getUserEmail())
+                .password(userProfileDto.getPassword())
+                .userName(userProfileDto.getUserName())
+                .userPhone(userProfileDto.getUserPhone())
+                .userSex(UserSex.valueOf(userProfileDto.getUserSex()))
+                .userType(UserType.valueOf(userProfileDto.getUserType()))
+                .build();
+
+        userRepository.save(user);
+
+        Profile profile = Profile.builder()
+                .user(user)
+                .keyword(String.join(",", userProfileDto.getKeyword()))
+                .level(userProfileDto.getLevel())
+                .school(userProfileDto.getSchool())
+                .classArea(userProfileDto.getClassArea())
+                .classType(userProfileDto.getClassType())
+                .tutorProfileImg(userProfileDto.getTutorProfileImg())
+                .tutorMajor(userProfileDto.getTutorMajor())
+                .tutorClassNum(userProfileDto.getTutorClassNum())
+                .tutorIntro(userProfileDto.getTutorIntro())
+                .chatLink(userProfileDto.getChatLink())
+                .portLink(userProfileDto.getPortLink())
+                .authYN(userProfileDto.getAuthYN())
+                .tutorLikes(userProfileDto.getTutorLikes())
+                .studentType(userProfileDto.getStudentType())
+                .build();
+
+        profileRepository.save(profile);
     }
 }
