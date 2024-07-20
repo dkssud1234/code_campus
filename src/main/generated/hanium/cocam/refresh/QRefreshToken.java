@@ -28,7 +28,7 @@ public class QRefreshToken extends EntityPathBase<RefreshToken> {
 
     public final NumberPath<Long> tokenNo = createNumber("tokenNo", Long.class);
 
-    public final hanium.cocam.user.QUser user;
+    public final hanium.cocam.user.entity.QUser user;
 
     public QRefreshToken(String variable) {
         this(RefreshToken.class, forVariable(variable), INITS);
@@ -48,7 +48,7 @@ public class QRefreshToken extends EntityPathBase<RefreshToken> {
 
     public QRefreshToken(Class<? extends RefreshToken> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.user = inits.isInitialized("user") ? new hanium.cocam.user.QUser(forProperty("user")) : null;
+        this.user = inits.isInitialized("user") ? new hanium.cocam.user.entity.QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

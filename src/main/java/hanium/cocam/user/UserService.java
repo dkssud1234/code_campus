@@ -37,16 +37,43 @@ public class UserService {
     public Object signup(SignupRequest request) {
         try {
             // 이메일 중복 검사
-            isDuplicateUserId(request.getUserEmail());
+            isDuplicateUserEmail(request.getUserEmail());
 
             // 비밀번호 암호화
             String encodedPassword = passwordEncoder.encode(request.getPassword());
             request.setPassword(encodedPassword);
 
-            // 회원 저장
-            userRepository.save(request.toEntity());
+            User user = User.builder()
+                    .userEmail(request.getUserEmail())
+                    .password(request.getPassword())
+                    .userName(request.getUserName())
+                    .userPhone(request.getUserPhone())
+                    .userSex(UserSex.valueOf(request.getUserSex()))
+                    .userType(UserType.valueOf(request.getUserType()))
+                    .profile(Profile.builder()
+                            .keyword(String.join(",", request.getKeyword()))
+                            .level(request.getLevel())
+                            .school(request.getSchool())
+                            .classArea(request.getClassArea())
+                            .classType(request.getClassType())
+                            .tutorProfileImg(request.getTutorProfileImg())
+                            .tutorMajor(request.getTutorMajor())
+                            .tutorClassNum(request.getTutorClassNum())
+                            .tutorIntro(request.getTutorIntro())
+                            .chatLink(request.getChatLink())
+                            .portLink(request.getPortLink())
+                            .authYN(request.getAuthYN())
+                            .tutorLikes(request.getTutorLikes())
+                            .studentType(request.getStudentType())
+                            .build())
+                    .build();
+
+            userRepository.save(user);
+            profileRepository.save(user.getProfile());
+
             User findUser = userRepository.findByUserEmail(request.getUserEmail()).orElseThrow(() -> new IllegalArgumentException("not found userEmail : " + request.getUserEmail()));
             return new UserResponse(findUser);
+
         } catch (IllegalArgumentException e) {
             // 중복된 이메일로 인한 예외 발생 시에는 그대로 전달
             return e.getMessage();
@@ -56,31 +83,7 @@ public class UserService {
         }
     }
 
-    public Object addProfile(AddProfileRequest request) {
-        try {
-            Long userNo = request.getUserNo();
-            User user = userRepository.findById(userNo).orElseThrow(() -> new NoSuchElementException("not found User"));
-            isDuplicateUserNo(user);
-
-
-            Profile savedUserProfile = profileRepository.save(request.toEntity(user));
-
-            return new AddProfileResponse(savedUserProfile);
-        } catch (IllegalArgumentException e) {
-            return e.getMessage();
-        } catch (Exception e) {
-            return "프로필 등록 중 오류가 발생했습니다. 내용: " + e.getMessage();
-        }
-    }
-
-    private void isDuplicateUserNo(User user) {
-        Optional<Profile> findProfileUserNo = profileRepository.findByUser(user);
-        if (findProfileUserNo.isPresent()) {
-            throw new IllegalArgumentException("이미 프로필이 등록된 회원입니다.");
-        }
-    }
-
-    private void isDuplicateUserId(String userEmail) {
+    private void isDuplicateUserEmail(String userEmail) {
         Optional<User> findUserId = userRepository.findByUserEmail(userEmail);
         if (findUserId.isPresent()) {
             throw new IllegalArgumentException("중복된 이메일 입니다.");
@@ -144,39 +147,5 @@ public class UserService {
     }
     public String logout(LogoutRequest request) {
         return refreshTokenService.deleteByToken(request.getRefreshToken());
-    }
-
-    //추가
-    public void saveUserProfile(UserProfileDto userProfileDto) {
-        User user = User.builder()
-                .userEmail(userProfileDto.getUserEmail())
-                .password(userProfileDto.getPassword())
-                .userName(userProfileDto.getUserName())
-                .userPhone(userProfileDto.getUserPhone())
-                .userSex(UserSex.valueOf(userProfileDto.getUserSex()))
-                .userType(UserType.valueOf(userProfileDto.getUserType()))
-                .build();
-
-        userRepository.save(user);
-
-        Profile profile = Profile.builder()
-                .user(user)
-                .keyword(String.join(",", userProfileDto.getKeyword()))
-                .level(userProfileDto.getLevel())
-                .school(userProfileDto.getSchool())
-                .classArea(userProfileDto.getClassArea())
-                .classType(userProfileDto.getClassType())
-                .tutorProfileImg(userProfileDto.getTutorProfileImg())
-                .tutorMajor(userProfileDto.getTutorMajor())
-                .tutorClassNum(userProfileDto.getTutorClassNum())
-                .tutorIntro(userProfileDto.getTutorIntro())
-                .chatLink(userProfileDto.getChatLink())
-                .portLink(userProfileDto.getPortLink())
-                .authYN(userProfileDto.getAuthYN())
-                .tutorLikes(userProfileDto.getTutorLikes())
-                .studentType(userProfileDto.getStudentType())
-                .build();
-
-        profileRepository.save(profile);
     }
 }
