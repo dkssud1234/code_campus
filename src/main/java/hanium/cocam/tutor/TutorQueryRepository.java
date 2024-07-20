@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static hanium.cocam.user.QProfile.profile;
-import static hanium.cocam.user.QUser.user;
+import static hanium.cocam.user.entity.QProfile.profile;
+import static hanium.cocam.user.entity.QUser.user;
 
 @Repository
 @Slf4j

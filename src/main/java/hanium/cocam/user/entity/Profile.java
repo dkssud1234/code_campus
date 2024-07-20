@@ -18,14 +18,9 @@ public class Profile {
 
     // ============== 선후배 공통 ================
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @Column(name = "profile_no")
     private Long profileNo;
-    @OneToOne
-    @JoinColumn(name = "user_no")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
     private String keyword; // 키워드
     private String level; // 수업 레벨
     private String school; // 소속 학교(선배: 대학교 한정, 선배: 중~대학교)

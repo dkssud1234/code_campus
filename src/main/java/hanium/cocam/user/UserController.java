@@ -20,11 +20,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.signup(request));
     }
 
-    @PostMapping("/signup/profile")
-    public ResponseEntity<Object> addProfile(@RequestBody AddProfileRequest request) {
-        return ResponseEntity.ok().body(userService.addProfile(request));
-    }
-
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok().body(userService.login(request));
@@ -45,10 +40,5 @@ public class UserController {
        return ResponseEntity.ok(userService.logout(request));
     }
 
-    @PostMapping("/test")
-    public ResponseEntity<String> createUserProfile(@RequestBody UserProfileDto userProfileDto) {
-        userService.saveUserProfile(userProfileDto);
-        return ResponseEntity.ok().build();
-    }
 
 }

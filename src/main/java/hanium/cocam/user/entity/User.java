@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @NoArgsConstructor
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class User extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long userNo; // 유저 번호
     private String userEmail;
     private String password;
@@ -25,10 +27,8 @@ public class User extends BaseEntity {
     private String userPhone;
     @Enumerated(EnumType.STRING)
     private UserType userType;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @OneToOne
+    @JoinColumn(name = "profile_no")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Profile profile;
-
-    public Profile getProfile() {
-        return this.profile;
-    }
 }
