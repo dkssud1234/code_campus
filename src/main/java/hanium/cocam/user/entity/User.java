@@ -12,8 +12,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @NoArgsConstructor
 @Getter
-@AllArgsConstructor
 @Table(name = "TB_USERS")
+@AllArgsConstructor
 @Builder
 public class User extends BaseEntity {
     @Id
@@ -22,11 +22,14 @@ public class User extends BaseEntity {
     private String userEmail;
     private String password;
     private String userName;
+
     @Enumerated(EnumType.STRING)
     private UserSex userSex;
     private String userPhone;
+
     @Enumerated(EnumType.STRING)
     private UserType userType;
+
     @OneToOne
     @JoinColumn(name = "profile_no")
     @OnDelete(action = OnDeleteAction.CASCADE)
