@@ -30,7 +30,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_no")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Profile profile;

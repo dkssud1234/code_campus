@@ -23,7 +23,8 @@ public class RefreshToken {
     private Long tokenNo;
     private String refreshToken;
     private Instant expiryDate;
-    @OneToOne
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_no")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;

@@ -15,7 +15,7 @@ public class JwtUtil {
         return Jwts.parser()
                 .setSigningKey(secretKey.getBytes())
                 .parseClaimsJws(token)
-                .getBody().get("userId", String.class);
+                .getBody().get("userEmail", String.class);
     }
 
     public static Long getUserNo(String token, String secretKey) {
@@ -29,10 +29,12 @@ public class JwtUtil {
         Date expirationDate = Jwts.parser()
                 .setSigningKey(secretKey.getBytes())
                 .parseClaimsJws(token)
-                .getBody().getExpiration();
+                .getBody()
+                .getExpiration();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul")); // 로컬 시간대로 설정
+
         return dateFormat.format(expirationDate);
     }
 
