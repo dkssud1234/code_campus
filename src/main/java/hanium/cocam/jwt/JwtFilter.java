@@ -12,6 +12,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final UserService userService;
+    private final UserDetailsService userDetailsService;
     private final String secretKey;
 
     @Override
@@ -48,12 +50,15 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // username token 에서 꺼내기
-        String userId = JwtUtil.getUserName(token, secretKey);
+        String username = JwtUtil.getUserName(token, secretKey);
+
+        // UserDetails 로드
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         // 권한 부여
-        UsernamePasswordAuthenticationToken authenticationToken
-                = new UsernamePasswordAuthenticationToken(userId, null, List.of(new SimpleGrantedAuthority("USER")));
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
 
         // Detail 넣기
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

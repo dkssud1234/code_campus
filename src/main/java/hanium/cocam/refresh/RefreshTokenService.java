@@ -2,6 +2,7 @@ package hanium.cocam.refresh;
 
 
 import hanium.cocam.user.UserRepository;
+import hanium.cocam.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class RefreshTokenService {
     private final UserRepository userRepository;
 
     public RefreshToken createRefreshToken(String userEmail) {
-        ZonedDateTime expiryDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).plus(14, ChronoUnit.DAYS);
+        ZonedDateTime expiryDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).plus(1, ChronoUnit.MINUTES);
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(userRepository.findByUserEmail(userEmail).get())
@@ -31,17 +32,39 @@ public class RefreshTokenService {
         return refreshTokenRepository.save(refreshToken);
     }
 
+    public Optional<RefreshToken> findByUser(User user) {
+        return refreshTokenRepository.findByUser(user);
+    }
+
+
     public Optional<RefreshToken> findByToken(String refreshToken) {
         return refreshTokenRepository.findByRefreshToken(refreshToken);
     }
 
     public RefreshToken verifyExpiration(RefreshToken refreshToken) {
         if (refreshToken.getExpiryDate().compareTo(Instant.now()) < 0) {
-            refreshTokenRepository.delete(refreshToken);
-            throw new RuntimeException(refreshToken.getRefreshToken() + "Refresh token이 만료되었습니다");
+            refreshToken.setExpiryDate(Instant.now().plus(1, ChronoUnit.MINUTES));
+            return refreshTokenRepository.save(refreshToken);
         }
         return refreshToken;
     }
+
+    public RefreshToken isExistsRefreshToken(User user, String userEmail) {
+        // 리프레쉬 토큰 확인 및 유효성 검증
+        RefreshToken refreshToken;
+
+        // 해당 유저로 검색해서 해당 유저가 리프레시 토큰이 있는지 확인
+        Optional<RefreshToken> existingToken = findByUser(user);
+
+        // 이미 있을경우
+        if (existingToken.isPresent()) {
+            refreshToken = verifyExpiration(existingToken.get());
+        } else { // 없을 경우
+            refreshToken = createRefreshToken(userEmail);
+        }
+        return refreshToken;
+    }
+
 
     public String deleteByToken(String refreshToken) {
         if(findByToken(refreshToken).isPresent()) {

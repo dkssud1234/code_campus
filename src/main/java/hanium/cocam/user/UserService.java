@@ -79,7 +79,7 @@ public class UserService {
             return e.getMessage();
         } catch (Exception e) {
             // 그 외의 예외 발생 시에는 일반적인 오류 메시지 반환
-            return "회원가입 중 오류가 발생했습니다. 오류내용 : " + e.getMessage();
+            return "회원가입 중 오류가 발생했습니다. " + e.getMessage();
         }
     }
 
@@ -99,10 +99,13 @@ public class UserService {
 
         // 사용자가 존재하고 비밀번호가 일치하는 경우에만 인증 성공
         if (findUser.isPresent() && passwordEncoder.matches(password, findUser.get().getPassword())) {
-            String userName = findUser.get().getUserName();
-            Long userNo = findUser.get().getUserNo();
+            User user = findUser.get();
+            String userName = user.getUserName();
+            Long userNo = user.getUserNo();
 
-            RefreshToken refreshToken = refreshTokenService.createRefreshToken(request.getUserEmail());
+            // 리프레쉬 토큰 확인 및 유효성 검증
+            RefreshToken refreshToken = refreshTokenService.isExistsRefreshToken(user, userEmail);
+
             String accessToken = JwtUtil.createJwt(userEmail, userNo, secretKey, expiredMs);
 
             return LoginResponse.builder()

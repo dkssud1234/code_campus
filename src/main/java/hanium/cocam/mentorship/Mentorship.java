@@ -8,12 +8,9 @@ import lombok.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TB_MENTORSHIP")
 public class Mentorship {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mentorshipNo;
@@ -27,4 +24,14 @@ public class Mentorship {
     private String mentorshipTime; // 수업 시간
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @Builder
+    public Mentorship(Long mentorshipNo, User tutor, User tutee, String mentorshipDay, String mentorshipTime, Category category) {
+        this.mentorshipNo = mentorshipNo;
+        this.tutor = tutor;
+        this.tutee = tutee;
+        this.mentorshipDay = mentorshipDay;
+        this.mentorshipTime = mentorshipTime;
+        this.category = category;
+    }
 }
