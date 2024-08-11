@@ -21,7 +21,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
 public class UserService {
 
@@ -34,7 +33,8 @@ public class UserService {
     private String secretKey;
     private Long expiredMs = 1000 * 60 * 60 * 8790L;  // 토큰 유효시간 1년(테스트용)
 
-    public Object signup(SignupRequest request) {
+    @Transactional
+    public String signup(SignupRequest request) {
         try {
             // 이메일 중복 검사
             isDuplicateUserEmail(request.getUserEmail());
@@ -72,7 +72,8 @@ public class UserService {
             profileRepository.save(user.getProfile());
 
             User findUser = userRepository.findByUserEmail(request.getUserEmail()).orElseThrow(() -> new IllegalArgumentException("not found userEmail : " + request.getUserEmail()));
-            return new UserResponse(findUser);
+
+            return "회원가입 완료";
 
         } catch (IllegalArgumentException e) {
             // 중복된 이메일로 인한 예외 발생 시에는 그대로 전달
