@@ -2,7 +2,6 @@ package hanium.cocam.domain.user;
 
 import hanium.cocam.domain.user.dto.*;
 import hanium.cocam.dto.ResponseDTO;
-import hanium.cocam.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

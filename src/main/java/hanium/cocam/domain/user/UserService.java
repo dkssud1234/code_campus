@@ -4,7 +4,6 @@ import hanium.cocam.domain.user.dto.*;
 import hanium.cocam.jwt.JwtUtil;
 import hanium.cocam.domain.refresh.RefreshToken;
 import hanium.cocam.domain.refresh.RefreshTokenService;
-import hanium.cocam.user.dto.*;
 import hanium.cocam.domain.user.entity.Profile;
 import hanium.cocam.domain.user.entity.User;
 import hanium.cocam.domain.user.entity.UserSex;
