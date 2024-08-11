@@ -1,5 +1,6 @@
 package hanium.cocam.user;
 
+import hanium.cocam.dto.ResponseDTO;
 import hanium.cocam.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,13 +17,48 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> signup(@RequestBody SignupRequest request) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.signup(request));
+    public ResponseEntity<ResponseDTO<?>> signup(@RequestBody SignupRequest request) {
+        String msg = userService.signup(request);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ResponseDTO.builder()
+                        .result(true)
+                        .status(HttpStatus.OK.value())
+                        .message(msg)
+                        .data(null)
+                        .build());
+
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok().body(userService.login(request));
+    public ResponseEntity<ResponseDTO<?>> login(@RequestBody LoginRequest request) {
+        Object response = userService.login(request);
+
+        if (response instanceof LoginResponse) {
+            // 로그인 성공
+            return ResponseEntity.ok().body(ResponseDTO.builder()
+                    .result(true)
+                    .status(HttpStatus.OK.value())
+                    .message("로그인 완료")
+                    .data(response)
+                    .build());
+        } else if (response instanceof LoginFailResponse) {
+            // 로그인 실패
+            return ResponseEntity.ok().body(ResponseDTO.builder()
+                    .result(false)
+                    .status(HttpStatus.UNAUTHORIZED.value())
+                    .message("로그인 실패")
+                    .data(null)
+                    .build());
+        }
+
+        // 예외처리
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.builder()
+                .result(false)
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message("서버 오류")
+                .data(null)
+                .build());
     }
 
     @GetMapping("/{userNo}")
