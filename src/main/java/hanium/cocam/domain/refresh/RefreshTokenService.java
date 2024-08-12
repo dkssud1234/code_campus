@@ -5,6 +5,7 @@ import hanium.cocam.domain.user.UserRepository;
 import hanium.cocam.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -65,7 +66,7 @@ public class RefreshTokenService {
         return refreshToken;
     }
 
-
+    @Transactional
     public String deleteByToken(String refreshToken) {
         if(findByToken(refreshToken).isPresent()) {
             refreshTokenRepository.deleteByRefreshToken(refreshToken);
