@@ -145,6 +145,7 @@ public class UserService {
                             .expiryDate(JwtUtil.getExpirationDate(accessToken, secretKey))
                             .userNo(user.getUserNo())
                             .userEmail(user.getUserEmail())
+                            .userName(user.getUserName())
                             .build();
                 });
     }
