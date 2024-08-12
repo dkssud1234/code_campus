@@ -70,7 +70,7 @@ public class UserService {
             userRepository.save(user);
             profileRepository.save(user.getProfile());
 
-            User findUser = userRepository.findByUserEmail(request.getUserEmail()).orElseThrow(() -> new IllegalArgumentException("not found userEmail : " + request.getUserEmail()));
+            userRepository.findByUserEmail(request.getUserEmail()).orElseThrow(() -> new IllegalArgumentException("not found userEmail : " + request.getUserEmail()));
 
             return "회원가입 완료";
 
