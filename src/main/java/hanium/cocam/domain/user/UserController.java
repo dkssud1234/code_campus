@@ -25,7 +25,6 @@ public class UserController {
                         .message(msg)
                         .data(null)
                         .build());
-
     }
 
     @PostMapping("/login")
@@ -50,7 +49,7 @@ public class UserController {
                     .build());
         }
 
-        // 예외처리
+        // 예외 처리
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseDTO.builder()
                 .result(false)
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -73,6 +72,4 @@ public class UserController {
     public ResponseEntity<String> logout(@RequestBody LogoutRequest request) {
        return ResponseEntity.ok(userService.logout(request));
     }
-
-
 }
