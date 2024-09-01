@@ -2,6 +2,7 @@ package hanium.cocam.jwt;
 
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -40,10 +41,15 @@ public class JwtUtil {
     }
 
     public static boolean isExpired(String token, String secretKey) {
-        return Jwts.parser()
-                .setSigningKey(secretKey.getBytes())
-                .parseClaimsJws(token)
-                .getBody().getExpiration().before(new Date());
+        try {
+            Jwts.parser()
+                    .setSigningKey(secretKey.getBytes())
+                    .parseClaimsJws(token)
+                    .getBody().getExpiration();
+            return false;
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
     }
 
     public static String createJwt(String userEmail, Long userNo, String secretKey, Long expiredMs) {
