@@ -34,6 +34,8 @@ public class UserService {
 
 //    private Long expiredMs = 1000 * 60 * 60 * 8790L;  // 토큰 유효시간 1년(테스트용)
 
+
+    // commit 
     @Transactional
     public String signup(SignupRequest request) {
         try {
