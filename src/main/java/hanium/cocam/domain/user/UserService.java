@@ -34,11 +34,11 @@ public class UserService {
 
 //    private Long expiredMs = 1000 * 60 * 60 * 8790L;  // 토큰 유효시간 1년(테스트용)
 
+
+    // commit 
     @Transactional
     public String signup(SignupRequest request) {
         try {
-            // 이메일 중복 검사
-            isDuplicateUserEmail(request.getUserEmail());
 
             // 비밀번호 암호화
             String encodedPassword = passwordEncoder.encode(request.getPassword());
@@ -85,7 +85,7 @@ public class UserService {
         }
     }
 
-    private void isDuplicateUserEmail(String userEmail) {
+    public void isDuplicateUserEmail(String userEmail) {
         Optional<User> findUserId = userRepository.findByUserEmail(userEmail);
         if (findUserId.isPresent()) {
             throw new IllegalArgumentException("중복된 이메일 입니다.");

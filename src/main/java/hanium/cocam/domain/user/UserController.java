@@ -70,6 +70,20 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestBody LogoutRequest request) {
-       return ResponseEntity.ok(userService.logout(request));
+        return ResponseEntity.ok(userService.logout(request));
     }
+
+    @GetMapping("/check-email/{userEmail}")
+    public ResponseEntity<Boolean> checkDuplicateEmail(@PathVariable(name = "userEmail") String userEmail) {
+        try {
+            userService.isDuplicateUserEmail(userEmail);
+            // 중복이 아닐 때 true 반환
+            return ResponseEntity.ok(true);
+        } catch (IllegalArgumentException e) {
+            // 중복일 때 false 반환
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+    }
+
 }
+
