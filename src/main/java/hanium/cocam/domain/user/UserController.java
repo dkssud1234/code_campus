@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -18,10 +20,10 @@ public class UserController {
     public ResponseEntity<ResponseDTO<?>> signup(@RequestBody SignupRequest request) {
         String msg = userService.signup(request);
 
-        return ResponseEntity.status(HttpStatus.OK).body(
+        return ResponseEntity.status(HttpStatus.CREATED).body(
                 ResponseDTO.builder()
                         .result(true)
-                        .status(HttpStatus.OK.value())
+                        .status(HttpStatus.CREATED.value())
                         .message(msg)
                         .data(null)
                         .build());
@@ -63,9 +65,25 @@ public class UserController {
         return ResponseEntity.ok(userService.findUser(userNo));
     }
 
-    @PostMapping("/refreshToken")
-    public ResponseEntity<LoginResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
-        return ResponseEntity.ok(userService.refreshToken(request).orElseThrow(() -> new RuntimeException("Refresh Token이 존재하지 않습니다.")));
+    /**
+     * 액세스 토큰 재발급
+     * @param request
+     * @return
+     */
+    @PostMapping("/issueAccessToken")
+    public ResponseEntity<ResponseDTO<LoginResponse>> issueAccessToken(@RequestBody RefreshTokenRequest request) {
+
+        LoginResponse loginResponse = userService.refreshToken(request)
+                .orElseThrow(() -> new RuntimeException("Refresh Token이 존재하지 않거나 유효하지 않습니다."));
+
+        return ResponseEntity.ok(
+                ResponseDTO.<LoginResponse>builder()
+                        .result(true)
+                        .status(HttpStatus.OK.value())
+                        .message("리프레쉬 토큰 재발급 완료")
+                        .data(loginResponse)
+                        .build()
+        );
     }
 
     @PostMapping("/logout")
@@ -73,8 +91,8 @@ public class UserController {
         return ResponseEntity.ok(userService.logout(request));
     }
 
-    @GetMapping("/check-email/{userEmail}")
-    public ResponseEntity<Boolean> checkDuplicateEmail(@PathVariable(name = "userEmail") String userEmail) {
+    @GetMapping("/isDuplicate/{userEmail}")
+    public ResponseEntity<Boolean> isDuplicateEmail(@PathVariable(name = "userEmail") String userEmail) {
         try {
             userService.isDuplicateUserEmail(userEmail);
             // 중복이 아닐 때 true 반환
