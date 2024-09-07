@@ -3,10 +3,14 @@ package hanium.cocam.domain.refresh;
 
 import hanium.cocam.domain.user.UserRepository;
 import hanium.cocam.domain.user.entity.User;
+import hanium.cocam.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.naming.AuthenticationException;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -15,14 +19,19 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public RefreshToken createRefreshToken(String userEmail) {
-        ZonedDateTime expiryDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).plus(1, ChronoUnit.MINUTES);
+//        테스트용(유효시간:2분)
+        ZonedDateTime expiryDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).plus(2, ChronoUnit.MINUTES);
+//        실제 운영용(유효시간:2달)
+//        ZonedDateTime expiryDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).plus(2, ChronoUnit.MONTHS);
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(userRepository.findByUserEmail(userEmail).get())
@@ -37,33 +46,32 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByUser(user);
     }
 
-
     public Optional<RefreshToken> findByToken(String refreshToken) {
         return refreshTokenRepository.findByRefreshToken(refreshToken);
     }
 
     public RefreshToken verifyExpiration(RefreshToken refreshToken) {
+        // 유효기간이 지나면 5분 연장하고 재발급
         if (refreshToken.getExpiryDate().compareTo(Instant.now()) < 0) {
-            refreshToken.setExpiryDate(Instant.now().plus(1, ChronoUnit.MINUTES));
+            refreshToken.setExpiryDate(Instant.now().plus(2, ChronoUnit.MINUTES));
             return refreshTokenRepository.save(refreshToken);
         }
-        return refreshToken;
+        return refreshToken;  // 변경없이 반환
     }
 
+    @Transactional
     public RefreshToken isExistsRefreshToken(User user, String userEmail) {
-        // 리프레쉬 토큰 확인 및 유효성 검증
-        RefreshToken refreshToken;
-
-        // 해당 유저로 검색해서 해당 유저가 리프레시 토큰이 있는지 확인
         Optional<RefreshToken> existingToken = findByUser(user);
-
-        // 이미 있을경우
         if (existingToken.isPresent()) {
-            refreshToken = verifyExpiration(existingToken.get());
-        } else { // 없을 경우
-            refreshToken = createRefreshToken(userEmail);
+            RefreshToken refreshToken = existingToken.get();
+            if (refreshToken.getExpiryDate().compareTo(Instant.now()) > 0) {
+                return refreshToken; // 만료되지 않았다면 바로 반환
+            } else {
+                return verifyExpiration(refreshToken); // 만료된 경우 처리
+            }
+        } else {
+            return createRefreshToken(userEmail); // 없으면 새로 생성
         }
-        return refreshToken;
     }
 
     @Transactional

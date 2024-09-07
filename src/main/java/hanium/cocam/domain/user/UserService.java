@@ -30,16 +30,12 @@ public class UserService {
 
     @Value("${jwt.secret}")
     private String secretKey;
-    private Long expiredMs = 1000 * 60L;  // 토큰 유효시간 1분
+//    private Long expiredMs = 1000 * 60L;  // 토큰 유효시간 1분
+    private Long expiredMs = 1000 * 60 * 60 * 8790L;  // 토큰 유효시간 1년(테스트용)
 
-//    private Long expiredMs = 1000 * 60 * 60 * 8790L;  // 토큰 유효시간 1년(테스트용)
-
-
-    // commit 
     @Transactional
     public String signup(SignupRequest request) {
         try {
-
             // 비밀번호 암호화
             String encodedPassword = passwordEncoder.encode(request.getPassword());
             request.setPassword(encodedPassword);
@@ -151,6 +147,7 @@ public class UserService {
                             .build();
                 });
     }
+
     public String logout(LogoutRequest request) {
         return refreshTokenService.deleteByToken(request.getRefreshToken());
     }
