@@ -71,16 +71,16 @@ public class UserController {
      * @return
      */
     @PostMapping("/issueAccessToken")
-    public ResponseEntity<ResponseDTO<LoginResponse>> issueAccessToken(@RequestBody RefreshTokenRequest request) {
-
-        LoginResponse loginResponse = userService.refreshToken(request)
+    public ResponseEntity<ResponseDTO<LoginResponse>> issueAccessToken(@RequestHeader(value = "Authorization") String authorizationHeader,
+                                                                       @RequestBody RefreshTokenRequest request) {
+        LoginResponse loginResponse = userService.issueAccessToken(authorizationHeader, request)
                 .orElseThrow(() -> new RuntimeException("Refresh Token이 존재하지 않거나 유효하지 않습니다."));
 
         return ResponseEntity.ok(
                 ResponseDTO.<LoginResponse>builder()
                         .result(true)
                         .status(HttpStatus.OK.value())
-                        .message("리프레쉬 토큰 재발급 완료")
+                        .message("액세스 토큰 재발급 완료")
                         .data(loginResponse)
                         .build()
         );
