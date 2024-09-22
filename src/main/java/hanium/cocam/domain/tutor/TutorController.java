@@ -3,6 +3,7 @@ package hanium.cocam.domain.tutor;
 import hanium.cocam.domain.tutor.dto.TutorListResponse;
 import hanium.cocam.domain.tutor.dto.TutorSearchCond;
 import hanium.cocam.dto.ResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ public class TutorController {
 
     private final TutorService tutorService;
 
+    @Operation(
+            summary = "튜터 조회 API"
+    )
     @PostMapping("/find")
     public ResponseEntity<ResponseDTO<List<TutorListResponse>>> findTutor(@RequestBody(required = false) TutorSearchCond tutorSearchCond) {
         List<TutorListResponse> findTutors;
@@ -33,7 +37,7 @@ public class TutorController {
                 ResponseDTO.<List<TutorListResponse>>builder()
                         .result(true)
                         .status(HttpStatus.OK.value())
-                        .message("멘토 조회 완료")
+                        .message("튜터 조회 완료")
                         .data(findTutors)
                         .build()
         );
