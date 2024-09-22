@@ -80,8 +80,8 @@ public class TutorQueryRepository {
         return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
     }
 
-    private BooleanExpression eqUserSex(UserSex userSex) {
-        if (userSex != null && !userSex.equals("")) {
+    private BooleanExpression eqUserSex(String userSex) {
+        if (StringUtils.hasText(userSex)) {
             return user.userSex.eq(userSex);
         }
         return null;

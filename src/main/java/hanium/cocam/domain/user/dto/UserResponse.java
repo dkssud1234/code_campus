@@ -15,7 +15,7 @@ public class UserResponse {
     private Long userNo;
     private String userEmail;
     private String userName;
-    private UserSex userSex;
+    private String userSex;
     private String userPhone;
     private UserType userType;
 

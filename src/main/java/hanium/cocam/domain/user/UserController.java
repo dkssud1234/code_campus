@@ -85,10 +85,10 @@ public class UserController {
             description = "body 안에 refresh token을 보내야합니다. <br>" +
                     "accessToken은 authorizationHeader에서 파싱하여 확인합니다."
     )
+    //@RequestHeader(value = "Authorization") String authorizationHeader,
     @PostMapping("/issueAccessToken")
-    public ResponseEntity<ResponseDTO<LoginResponse>> issueAccessToken(@RequestHeader(value = "Authorization") String authorizationHeader,
-                                                                       @RequestBody RefreshTokenRequest request) {
-        LoginResponse loginResponse = userService.issueAccessToken(authorizationHeader, request)
+    public ResponseEntity<ResponseDTO<LoginResponse>> issueAccessToken(@RequestBody RefreshTokenRequest request) {
+        LoginResponse loginResponse = userService.issueAccessToken(request)
                 .orElseThrow(() -> new RuntimeException("Refresh Token이 존재하지 않거나 유효하지 않습니다."));
 
         return ResponseEntity.ok(

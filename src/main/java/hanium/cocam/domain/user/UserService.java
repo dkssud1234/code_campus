@@ -45,7 +45,7 @@ public class UserService {
                     .password(request.getPassword())
                     .userName(request.getUserName())
                     .userPhone(request.getUserPhone())
-                    .userSex(UserSex.valueOf(request.getUserSex()))
+                    .userSex(request.getUserSex())
                     .userType(UserType.valueOf(request.getUserType()))
                     .profile(Profile.builder()
                             .keyword(String.join(",", request.getKeyword()))
@@ -131,7 +131,7 @@ public class UserService {
                 .build();
     }
 
-    public Optional<LoginResponse> issueAccessToken(String authorizationHeader, RefreshTokenRequest request) {
+    public Optional<LoginResponse> issueAccessToken(RefreshTokenRequest request) {
         return refreshTokenService.findByToken(request.getRefreshToken())
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)

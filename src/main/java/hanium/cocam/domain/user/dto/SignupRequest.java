@@ -25,7 +25,7 @@ public class SignupRequest {
     private String tutorIntro;
     private String chatLink;
     private String portLink;
-    private char authYN;
+    private String authYN;
     private int tutorLikes;
     private String studentType;
 }
