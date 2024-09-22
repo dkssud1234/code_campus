@@ -2,6 +2,7 @@ package hanium.cocam.domain.user;
 
 import hanium.cocam.domain.user.dto.*;
 import hanium.cocam.dto.ResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,9 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(
+            summary = "회원가입 API"
+    )
     @PostMapping("/signup")
     public ResponseEntity<ResponseDTO<?>> signup(@RequestBody SignupRequest request) {
         String msg = userService.signup(request);
@@ -29,6 +33,9 @@ public class UserController {
                         .build());
     }
 
+    @Operation(
+            summary = "로그인 API"
+    )
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO<?>> login(@RequestBody LoginRequest request) {
         Object response = userService.login(request);
@@ -60,6 +67,9 @@ public class UserController {
                 .build());
     }
 
+    @Operation(
+            summary = "유저 상세보기 API"
+    )
     @GetMapping("/{userNo}")
     public ResponseEntity<UserResponse> findUser(@PathVariable(name = "userNo") Long userNo) {
         return ResponseEntity.ok(userService.findUser(userNo));
@@ -70,6 +80,11 @@ public class UserController {
      * @param request
      * @return
      */
+    @Operation(
+            summary = "액세스 토큰 재발급 API",
+            description = "body 안에 refresh token을 보내야합니다. <br>" +
+                    "accessToken은 authorizationHeader에서 파싱하여 확인합니다."
+    )
     @PostMapping("/issueAccessToken")
     public ResponseEntity<ResponseDTO<LoginResponse>> issueAccessToken(@RequestHeader(value = "Authorization") String authorizationHeader,
                                                                        @RequestBody RefreshTokenRequest request) {
@@ -86,11 +101,19 @@ public class UserController {
         );
     }
 
+    @Operation(
+            summary = "로그아웃 API"
+    )
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestBody LogoutRequest request) {
         return ResponseEntity.ok(userService.logout(request));
     }
 
+    @Operation(
+            summary = "이메일 중복 체크 API",
+            description = "유저의 이메일의 중복을 확인합니다. <br>" +
+                    "true: 사용 가능한 이메일 / false: 중복된 이메일"
+    )
     @GetMapping("/isDuplicate/{userEmail}")
     public ResponseEntity<Boolean> isDuplicateEmail(@PathVariable(name = "userEmail") String userEmail) {
         try {

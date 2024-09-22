@@ -30,7 +30,7 @@ public class UserService {
 
     @Value("${jwt.secret}")
     private String secretKey;
-//    private Long expiredMs = 1000 * 60L;  // 토큰 유효시간 1분
+    //    private Long expiredMs = 1000 * 60L;  // 토큰 유효시간 1분
     private Long expiredMs = 1000 * 60 * 60 * 8790L;  // 토큰 유효시간 1년(테스트용)
 
     @Transactional
@@ -131,16 +131,16 @@ public class UserService {
                 .build();
     }
 
-    public Optional<LoginResponse> refreshToken(RefreshTokenRequest request) {
+    public Optional<LoginResponse> issueAccessToken(String authorizationHeader, RefreshTokenRequest request) {
         return refreshTokenService.findByToken(request.getRefreshToken())
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
                 .map(user -> {
-                    String accessToken = JwtUtil.createJwt(user.getUserEmail(), user.getUserNo(), secretKey, expiredMs);
+                    String newAccessToken = JwtUtil.createJwt(user.getUserEmail(), user.getUserNo(), secretKey, expiredMs);
                     return LoginResponse.builder()
-                            .accessToken(accessToken)
+                            .accessToken(newAccessToken)
                             .refreshToken(request.getRefreshToken())
-                            .expiryDate(JwtUtil.getExpirationDate(accessToken, secretKey))
+                            .expiryDate(JwtUtil.getExpirationDate(newAccessToken, secretKey))
                             .userNo(user.getUserNo())
                             .userEmail(user.getUserEmail())
                             .userName(user.getUserName())

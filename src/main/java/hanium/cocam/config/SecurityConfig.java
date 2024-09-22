@@ -39,8 +39,8 @@ public class SecurityConfig {
     private static final String[] WHITE_LIST_URL = {
             "/api/users/login",
             "/api/users/signup",
-            "/api/users/check-email/**",
-            "/api/tutor/find",
+            "/api/users/isDuplicate/**",
+            "/api/tutor/find/**",
             "/swagger",
             "/swagger-ui.html",
             "/swagger-ui/**",
