@@ -23,8 +23,7 @@ public class User extends BaseEntity {
     private String password;
     private String userName;
 
-    @Enumerated(EnumType.STRING)
-    private UserSex userSex;
+    private String userSex;
     private String userPhone;
 
     @Enumerated(EnumType.STRING)

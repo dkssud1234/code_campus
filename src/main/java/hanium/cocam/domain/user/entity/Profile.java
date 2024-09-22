@@ -38,7 +38,7 @@ public class Profile {
     private String tutorIntro; // 선배 소개글 (자유 형식)
     private String chatLink; // 오픈채팅 링크
     private String portLink; // 포트폴리오 링크
-    private char authYN; // 학교 인증 유무(Y,N)
+    private String authYN; // 학교 인증 유무(Y,N)
     private int tutorLikes; // 유저 좋아요 개수
     //  =========================================
 

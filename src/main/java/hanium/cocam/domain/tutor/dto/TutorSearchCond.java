@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TutorSearchCond {
-    private UserSex userSex;
+    private String userSex;
     private String level;
     private String classArea;
     private String keyword;
