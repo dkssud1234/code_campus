@@ -18,6 +18,7 @@ public class MentorshipRequest {
     private String mentorshipDay; // 수업 요일
     private String mentorshipTime; // 수업 시간
     private Category category;
+    private String note; // 선배에게 하고 싶은 말
 
     public Mentorship toEntity(User tutor, User tutee) {
         return Mentorship.builder()
@@ -26,6 +27,8 @@ public class MentorshipRequest {
                 .mentorshipDay(mentorshipDay)
                 .mentorshipTime(mentorshipTime)
                 .category(category)
+                .mentorshipStatus("WAIT") // 기본값: 매칭 대기 상태
+                .note(note)
                 .build();
     }
 }

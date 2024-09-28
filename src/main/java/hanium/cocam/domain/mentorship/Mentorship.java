@@ -8,7 +8,10 @@ import lombok.*;
 
 @Entity
 @Getter
+@Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "TB_MENTORSHIP")
 public class Mentorship {
     @Id
@@ -24,14 +27,6 @@ public class Mentorship {
     private String mentorshipTime; // 수업 시간
     @Enumerated(EnumType.STRING)
     private Category category;
-
-    @Builder
-    public Mentorship(Long mentorshipNo, User tutor, User tutee, String mentorshipDay, String mentorshipTime, Category category) {
-        this.mentorshipNo = mentorshipNo;
-        this.tutor = tutor;
-        this.tutee = tutee;
-        this.mentorshipDay = mentorshipDay;
-        this.mentorshipTime = mentorshipTime;
-        this.category = category;
-    }
+    private String mentorshipStatus; // 튜터링 상태 ex) WAIT: 매칭 대기 상태(기본값), OK: 매칭 수락, NO: 매칭 거절,
+    private String note; // 선배에게 하고 싶은 말 ex) 제발 수업 하게 해주세요
 }

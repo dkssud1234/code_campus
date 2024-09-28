@@ -1,5 +1,6 @@
 package hanium.cocam.domain.tutor;
 
+import hanium.cocam.domain.tutor.dto.TutorMyPageResponse;
 import hanium.cocam.domain.tutor.dto.TutorListResponse;
 import hanium.cocam.domain.tutor.dto.TutorSearchCond;
 import hanium.cocam.dto.ResponseDTO;
@@ -27,7 +28,7 @@ public class TutorController {
     public ResponseEntity<ResponseDTO<List<TutorListResponse>>> findTutor(@RequestBody(required = false) TutorSearchCond tutorSearchCond) {
         List<TutorListResponse> findTutors;
 
-        if(tutorSearchCond != null) {
+        if (tutorSearchCond != null) {
             findTutors = tutorService.findTutor(tutorSearchCond);
         } else {
             findTutors = tutorService.findTutor();
@@ -39,6 +40,25 @@ public class TutorController {
                         .status(HttpStatus.OK.value())
                         .message("튜터 조회 완료")
                         .data(findTutors)
+                        .build()
+        );
+    }
+
+    @Operation(
+            summary = "선배 - 마이페이지 API",
+            description = "선배의 나의 정보 조회 입니다. <br><br>" +
+                    "tutorDetailResponse: 선배 상세 정보를 반환합니다.(마이 페이지)<br>" +
+                    "myTuteeListResponse: 후배 관리 - 수업 진행 중인 후배 list를 반환합니다. <br>" +
+                    "requestedMentorshipListResponse: 매칭 요청 리스트 - 나에게 매칭 요청을 한 후배 list를 반환합니다. <br>"
+    )
+    @GetMapping("/{id}/detail")
+    public ResponseEntity<ResponseDTO<TutorMyPageResponse>> detail(@PathVariable(name = "id") Long tutorNo) {
+        return ResponseEntity.ok().body(
+                ResponseDTO.<TutorMyPageResponse>builder()
+                        .result(true)
+                        .status(HttpStatus.OK.value())
+                        .message("선배 마이페이지 조회 완료")
+                        .data(tutorService.detail(tutorNo))
                         .build()
         );
     }
