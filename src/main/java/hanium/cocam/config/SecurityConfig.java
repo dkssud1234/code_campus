@@ -42,6 +42,7 @@ public class SecurityConfig {
             "/api/users/isDuplicate/**",
             "/api/users/issueAccessToken",
             "/api/tutor/find",
+            "/api/tutor/profile/**",
             "/api/users/detail/**",
             "/swagger",
             "/swagger-ui.html",
