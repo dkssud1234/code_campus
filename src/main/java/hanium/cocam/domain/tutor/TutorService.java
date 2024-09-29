@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +33,23 @@ public class TutorService {
                 .stream()
                 .map(user -> new TutorListResponse(user, user.getProfile())).toList();
         return findTutors;
+    }
+
+    public TutorProfileResponse profileDetail(Long tutorNo) {
+        User tutor = userRepository.findById(tutorNo).orElseThrow(() -> new NoSuchElementException("not found user" + tutorNo));
+        TutorProfileResponse tutorProfile = TutorProfileResponse.builder()
+                .tutorProfileImg(tutor.getProfile().getTutorProfileImg())
+                .keyword(tutor.getProfile().getKeyword())
+                .name(tutor.getUserName())
+                .classArea(tutor.getProfile().getClassArea())
+                .classType(tutor.getProfile().getClassType())
+                .school(tutor.getProfile().getSchool())
+                .tutorIntro(tutor.getProfile().getTutorIntro())
+                .chatLink(tutor.getProfile().getChatLink())
+                .portLink(tutor.getProfile().getPortLink())
+                .build();
+
+        return tutorProfile;
     }
 
     public TutorMyPageResponse detail(Long tutorNo) {
