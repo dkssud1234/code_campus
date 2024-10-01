@@ -16,6 +16,7 @@ public class TutorProfileResponse {
     private String classArea;
     private String classType;
     private String school;
+    private String tutorMajor;
     private String tutorIntro;
     private String chatLink;
     private String portLink;

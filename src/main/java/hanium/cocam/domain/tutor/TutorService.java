@@ -44,6 +44,7 @@ public class TutorService {
                 .classArea(tutor.getProfile().getClassArea())
                 .classType(tutor.getProfile().getClassType())
                 .school(tutor.getProfile().getSchool())
+                .tutorMajor(tutor.getProfile().getTutorMajor())
                 .tutorIntro(tutor.getProfile().getTutorIntro())
                 .chatLink(tutor.getProfile().getChatLink())
                 .portLink(tutor.getProfile().getPortLink())

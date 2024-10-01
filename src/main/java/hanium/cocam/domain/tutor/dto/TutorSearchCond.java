@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TutorSearchCond {
     private String userSex;
-    private String level;
-    private String classArea;
+    private String[] level;
     private String keyword;
     private String orderCondition;
 }

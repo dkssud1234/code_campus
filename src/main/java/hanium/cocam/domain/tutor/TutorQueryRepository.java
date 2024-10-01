@@ -3,6 +3,7 @@ package hanium.cocam.domain.tutor;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import hanium.cocam.domain.tutor.dto.TutorSearchCond;
 import hanium.cocam.domain.user.entity.User;
@@ -59,7 +60,6 @@ public class TutorQueryRepository {
                 .where(
                         user.userType.eq(UserType.TUTOR),
                         eqUserSex(cond.getUserSex()),
-                        likeClassArea(cond.getClassArea()),
                         likeKeyword(cond.getKeyword()),
                         likeLevel(cond.getLevel())
                 )
@@ -87,23 +87,29 @@ public class TutorQueryRepository {
         return null;
     }
 
-    private BooleanExpression likeLevel(String level) {
-        if (StringUtils.hasText(level)) {
-            return profile.level.like("%" + level + "%");
+    private BooleanExpression likeLevel(String[] levels) {
+        if (levels == null || levels.length == 0) {
+            return null;
         }
-        return null;
+
+        BooleanExpression result = null;
+        for (String level : levels) {
+            if (StringUtils.hasText(level)) {
+                BooleanExpression condition = profile.level.like("%" + level + "%");
+                if (result == null) {
+                    result = condition;
+                } else {
+                    result = result.or(condition);
+                }
+            }
+        }
+
+        return result;
     }
 
     private BooleanExpression likeKeyword(String keyword) {
         if (StringUtils.hasText(keyword)) {
             return profile.keyword.like("%" + keyword + "%");
-        }
-        return null;
-    }
-
-    private BooleanExpression likeClassArea(String classArea) {
-        if (StringUtils.hasText(classArea)) {
-            return profile.classArea.like("%" + classArea + "%");
         }
         return null;
     }
