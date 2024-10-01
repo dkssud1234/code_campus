@@ -85,7 +85,6 @@ public class UserController {
             description = "body 안에 refresh token을 보내야합니다. <br>" +
                     "accessToken은 authorizationHeader에서 파싱하여 확인합니다."
     )
-    //@RequestHeader(value = "Authorization") String authorizationHeader,
     @PostMapping("/issueAccessToken")
     public ResponseEntity<ResponseDTO<LoginResponse>> issueAccessToken(@RequestBody RefreshTokenRequest request) {
         LoginResponse loginResponse = userService.issueAccessToken(request)

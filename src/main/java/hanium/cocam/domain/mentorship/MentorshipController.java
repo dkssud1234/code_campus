@@ -31,6 +31,7 @@ public class MentorshipController {
     )
     @PostMapping("/update-status")
     public ResponseEntity<String> updateMentorship(@RequestBody MentorshipAcceptRequest request) {
+
         return ResponseEntity.ok().body(mentorshipService.updateMentorship(request));
     }
 }
