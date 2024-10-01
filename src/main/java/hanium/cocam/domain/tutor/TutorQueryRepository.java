@@ -60,6 +60,7 @@ public class TutorQueryRepository {
                 .where(
                         user.userType.eq(UserType.TUTOR),
                         eqUserSex(cond.getUserSex()),
+                        eqClassType(cond.getClassType()),
                         likeKeyword(cond.getKeyword()),
                         likeLevel(cond.getLevel())
                 )
@@ -83,6 +84,13 @@ public class TutorQueryRepository {
     private BooleanExpression eqUserSex(String userSex) {
         if (StringUtils.hasText(userSex)) {
             return user.userSex.eq(userSex);
+        }
+        return null;
+    }
+
+    private BooleanExpression eqClassType(String classType) {
+        if (StringUtils.hasText(classType)) {
+            return user.profile.classType.eq(classType);
         }
         return null;
     }
