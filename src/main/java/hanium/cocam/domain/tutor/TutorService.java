@@ -37,6 +37,7 @@ public class TutorService {
 
     public TutorProfileResponse profileDetail(Long tutorNo) {
         User tutor = userRepository.findById(tutorNo).orElseThrow(() -> new NoSuchElementException("not found user" + tutorNo));
+
         TutorProfileResponse tutorProfile = TutorProfileResponse.builder()
                 .tutorProfileImg(tutor.getProfile().getTutorProfileImg())
                 .keyword(tutor.getProfile().getKeyword())

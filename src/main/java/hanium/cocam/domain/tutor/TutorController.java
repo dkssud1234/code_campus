@@ -45,6 +45,10 @@ public class TutorController {
         );
     }
 
+    @Operation(
+            summary = "선배 탐색 - 선배 프로필 상세보기 API",
+            description = "선배의 프로필 정보 조회 입니다."
+    )
     @GetMapping("/profile/{id}")
     public ResponseEntity<ResponseDTO<TutorProfileResponse>> profileDetail(@PathVariable(name = "id") Long tutorNo) {
         return ResponseEntity.ok().body(
