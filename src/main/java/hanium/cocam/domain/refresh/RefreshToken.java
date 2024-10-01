@@ -24,7 +24,7 @@ public class RefreshToken {
     private String refreshToken;
     private Instant expiryDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_no")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;

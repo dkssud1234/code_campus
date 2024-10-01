@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class TutorListResponse {
+
+    private Long userNo;
     private String userName;
     private String tutorProfileImg;
     private String school;
@@ -19,6 +21,7 @@ public class TutorListResponse {
 
     @Builder
     public TutorListResponse(User user, Profile profile) {
+        this.userNo = user.getUserNo();
         this.userName = user.getUserName();
         this.tutorProfileImg = profile.getTutorProfileImg();
         this.school = profile.getSchool();

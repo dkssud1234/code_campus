@@ -70,7 +70,7 @@ public class UserController {
     @Operation(
             summary = "유저 상세보기 API"
     )
-    @GetMapping("/{userNo}")
+    @GetMapping("/detail/{userNo}")
     public ResponseEntity<UserResponse> findUser(@PathVariable(name = "userNo") Long userNo) {
         return ResponseEntity.ok(userService.findUser(userNo));
     }
@@ -125,6 +125,5 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
         }
     }
-
 }
 

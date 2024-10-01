@@ -23,6 +23,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 
@@ -80,6 +81,12 @@ public class JwtFilter extends OncePerRequestFilter {
                 .message(message)
                 .data(data)
                 .build();
-        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+
+        String jsonResponse = objectMapper.writeValueAsString(errorResponse);
+        try (OutputStream os = response.getOutputStream()) {
+            byte[] jsonBytes = jsonResponse.getBytes(StandardCharsets.UTF_8);
+            os.write(jsonBytes);
+        }
     }
+
 }

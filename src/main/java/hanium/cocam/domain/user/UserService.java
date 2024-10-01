@@ -59,7 +59,6 @@ public class UserService {
                             .tutorIntro(request.getTutorIntro())
                             .chatLink(request.getChatLink())
                             .portLink(request.getPortLink())
-                            .authYN(request.getAuthYN())
                             .tutorLikes(request.getTutorLikes())
                             .studentType(request.getStudentType())
                             .build())
