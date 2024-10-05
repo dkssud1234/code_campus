@@ -31,7 +31,7 @@ public class MentorshipService {
         // Mentorship 엔티티 생성 및 저장
         Mentorship mentorship = request.toEntity(tutor, tutee);
 
-        mentorship.setMentorshipDay(String.join(",", request.getMentorshipDay().split(",")));
+
         mentorshipRepository.save(mentorship);
 
         return "매칭 신청 완료";
