@@ -1,11 +1,14 @@
 package hanium.cocam.domain.mentorship;
 
 import hanium.cocam.domain.mentorship.dto.MentorshipAcceptRequest;
+import hanium.cocam.domain.mentorship.dto.MentorshipDetailsDTO;
 import hanium.cocam.domain.mentorship.dto.MentorshipRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/mentorship")
@@ -20,8 +23,9 @@ public class MentorshipController {
                     "튜터의 id는 해당 유저의 id를 가져오고, 튜터의 id는 로그인할 때 리턴한 유저의 id를 사용합니다."
     )
     @PostMapping("/request")
-    public ResponseEntity<String> requestMentorship(@RequestBody MentorshipRequest mentorshipRequest) {
-        return ResponseEntity.ok().body(mentorshipService.requestMentorship(mentorshipRequest));
+    public ResponseEntity<List<MentorshipDetailsDTO>> requestMentorship(@RequestBody MentorshipRequest mentorshipRequest) {
+        List<MentorshipDetailsDTO> mentorshipDetails = mentorshipService.requestMentorship(mentorshipRequest);
+        return ResponseEntity.ok().body(mentorshipDetails);
     }
 
     @Operation(
