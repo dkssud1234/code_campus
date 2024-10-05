@@ -1,9 +1,6 @@
 package hanium.cocam.domain.tutor;
 
-import hanium.cocam.domain.tutor.dto.TutorProfileResponse;
-import hanium.cocam.domain.tutor.dto.TutorMyPageResponse;
-import hanium.cocam.domain.tutor.dto.TutorListResponse;
-import hanium.cocam.domain.tutor.dto.TutorSearchCond;
+import hanium.cocam.domain.tutor.dto.*;
 import hanium.cocam.dto.ResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -76,6 +73,19 @@ public class TutorController {
                         .status(HttpStatus.OK.value())
                         .message("선배 마이페이지 조회 완료")
                         .data(tutorService.detail(tutorNo))
+                        .build()
+        );
+    }
+
+    @GetMapping("/tutee/{tuteeNo}/detail")
+    public ResponseEntity<ResponseDTO<TuteeDetailResponse>> getTuteeDetail(@PathVariable(name = "tuteeNo") Long tuteeNo) {
+        TuteeDetailResponse tuteeDetail = tutorService.getTuteeDetail(tuteeNo);
+        return ResponseEntity.ok().body(
+                ResponseDTO.<TuteeDetailResponse>builder()
+                        .result(true)
+                        .status(HttpStatus.OK.value())
+                        .message("후배 상세정보 조회 완료")
+                        .data(tuteeDetail)
                         .build()
         );
     }
