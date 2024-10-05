@@ -1,7 +1,7 @@
 package hanium.cocam.domain.mentorship;
 
 import hanium.cocam.domain.mentorship.dto.MentorshipAcceptRequest;
-import hanium.cocam.domain.mentorship.dto.MentorshipDetailsDTO;
+import hanium.cocam.domain.mentorship.dto.MentorshipKeywordsResponse;
 import hanium.cocam.domain.mentorship.dto.MentorshipRequest;
 import hanium.cocam.domain.user.entity.User;
 import hanium.cocam.domain.user.UserRepository;
@@ -10,10 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,43 +23,36 @@ public class MentorshipService {
     private final MentorshipRepository mentorshipRepository;
     private final UserRepository userRepository;
 
-    public List<MentorshipDetailsDTO> requestMentorship(MentorshipRequest request) {
-        User tutor = userRepository.findById(request.getTutorNo())
-                .orElseThrow(() -> new NoSuchElementException("Tutor not found User: " + request.getTutorNo()));
-        User tutee = userRepository.findById(request.getTuteeNo())
-                .orElseThrow(() -> new NoSuchElementException("Tutee not found User: " + request.getTuteeNo()));
+    public String requestMentorship(MentorshipRequest request) {
 
-        // Mentorship 엔티티 리스트를 생성 및 저장
-        List<MentorshipDetailsDTO> mentorshipDetailsList = new ArrayList<>();
+        User tutor = userRepository.findById(request.getTutorNo()).orElseThrow(() -> new NoSuchElementException("Tutor not found User: " + request.getTutorNo()));
+        User tutee = userRepository.findById(request.getTuteeNo()).orElseThrow(() -> new NoSuchElementException("Tutee not found User: " + request.getTuteeNo()));
 
-        for (String day : request.getMentorshipDay()) {
-            for (String time : request.getMentorshipTime()) {
-                Mentorship mentorship = Mentorship.builder()
-                        .tutor(tutor)
-                        .tutee(tutee)
-                        .mentorshipDay(day)
-                        .mentorshipTime(time)
-                        .mentorshipStatus("WAIT")
-                        .note(request.getNote())
-                        .build();
+        // Mentorship 엔티티 생성 및 저장
+        Mentorship mentorship = request.toEntity(tutor, tutee);
 
-                mentorshipRepository.save(mentorship);
+        mentorship.setMentorshipDay(String.join(",", request.getMentorshipDay().split(",")));
+        mentorshipRepository.save(mentorship);
 
-                // DTO 생성 및 추가
-                mentorshipDetailsList.add(new MentorshipDetailsDTO(
-                        mentorship.getMentorshipNo(),
-                        tutor.getUserNo(),
-                        tutor.getProfile().getKeywordArray(),
-                        tutee.getUserNo(),
-                        tutee.getProfile().getKeywordArray(),
-                        mentorship.getMentorshipDay(),
-                        mentorship.getMentorshipTime(),
-                        mentorship.getNote()
-                ));
-            }
-        }
+        return "매칭 신청 완료";
+    }
 
-        return mentorshipDetailsList; // 여러 멘토십 DTO 반환
+    // 튜터와 튜티의 키워드 조회 로직
+    public MentorshipKeywordsResponse getMentorshipKeywords(Long tutorNo, Long tuteeNo) {
+        // 튜터 조회
+        User tutor = userRepository.findById(tutorNo).orElseThrow(() -> new NoSuchElementException("Tutor not found User: " + tutorNo));
+
+        // 튜티 조회
+        User tutee = userRepository.findById(tuteeNo).orElseThrow(() -> new NoSuchElementException("Tutee not found User: " + tuteeNo));
+
+        // 튜터의 키워드 가져오기
+        List<String> tutorKeywords = Arrays.asList(tutor.getProfile().getKeywordArray());
+
+        // 튜티의 키워드 가져오기
+        List<String> tuteeKeywords = Arrays.asList(tutee.getProfile().getKeywordArray());
+
+        // 키워드 정보를 DTO로 반환
+        return new MentorshipKeywordsResponse(tutorKeywords, tuteeKeywords);
     }
 
     public String updateMentorship(MentorshipAcceptRequest request) {
