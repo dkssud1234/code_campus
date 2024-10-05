@@ -70,8 +70,8 @@ public class UserController {
     @Operation(
             summary = "유저 상세보기 API"
     )
-    @GetMapping("/detail/{userNo}")
-    public ResponseEntity<UserResponse> findUser(@PathVariable(name = "userNo") Long userNo) {
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<UserResponse> findUser(@PathVariable(name = "id") Long userNo) {
         return ResponseEntity.ok(userService.findUser(userNo));
     }
 

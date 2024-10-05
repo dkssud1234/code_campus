@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,8 +17,8 @@ import lombok.Setter;
 public class MentorshipRequest {
     private Long tutorNo;
     private Long tuteeNo;
-    private String mentorshipDay; // 수업 요일
-    private String mentorshipTime; // 수업 시간
+    private String mentorshipDay;
+    private String mentorshipTime;
     private Category category;
     private String note; // 선배에게 하고 싶은 말
 

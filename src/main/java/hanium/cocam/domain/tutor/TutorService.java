@@ -1,13 +1,16 @@
 package hanium.cocam.domain.tutor;
 
+import hanium.cocam.domain.mentorship.Mentorship;
 import hanium.cocam.domain.mentorship.MentorshipRepository;
 import hanium.cocam.domain.tutor.dto.*;
 import hanium.cocam.domain.user.UserRepository;
+import hanium.cocam.domain.user.entity.Profile;
 import hanium.cocam.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -37,6 +40,7 @@ public class TutorService {
 
     public TutorProfileResponse profileDetail(Long tutorNo) {
         User tutor = userRepository.findById(tutorNo).orElseThrow(() -> new NoSuchElementException("not found user" + tutorNo));
+
         TutorProfileResponse tutorProfile = TutorProfileResponse.builder()
                 .tutorProfileImg(tutor.getProfile().getTutorProfileImg())
                 .keyword(tutor.getProfile().getKeyword())
@@ -87,5 +91,24 @@ public class TutorService {
                 .myTuteeList(myTuteeList)
                 .requestedList(requestedList)
                 .build();
+    }
+
+    public TuteeDetailResponse getTuteeDetail(Long tuteeNo) {
+        User tutee = userRepository.findById(tuteeNo).orElseThrow(() -> new NoSuchElementException("not found user: " + tuteeNo));
+
+        // 튜티 상세 정보 조회
+        Mentorship mentorship = mentorshipRepository.findByTutee(tutee).orElseThrow(() -> new NoSuchElementException("not found mentorship for tutee: " + tuteeNo));
+
+        // 멘토십 상세 정보와 키워드 리스트를 가져와서 DTO로 반환
+        TuteeDetailResponse tuteeDetail = TuteeDetailResponse.builder()
+                .tuteeNo(tutee.getUserNo())
+                .name(tutee.getUserName())
+                .keywordList(Arrays.asList(tutee.getProfile().getKeywordArray())) // 키워드 리스트
+                .mentorshipDay(Arrays.asList(mentorship.getMentorshipDay())) // 중복 선택 가능한 멘토십 요일
+                .mentorshipTime(Arrays.asList(mentorship.getMentorshipTime())) // 선호 시간
+                .note(mentorship.getNote()) // 노트
+                .build();
+
+        return tuteeDetail;
     }
 }
