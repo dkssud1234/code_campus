@@ -93,22 +93,22 @@ public class TutorService {
                 .build();
     }
 
-    public TuteeDetailResponse getTuteeDetail(Long tuteeNo) {
-        User tutee = userRepository.findById(tuteeNo).orElseThrow(() -> new NoSuchElementException("not found user: " + tuteeNo));
+    public TuteeDetailResponse getTuteeDetailByMentorship(Long mentorshipNo) {
+        // mentorshipNo에 해당하는 멘토십 조회
+        Mentorship mentorship = mentorshipRepository.findById(mentorshipNo)
+                .orElseThrow(() -> new NoSuchElementException("해당 멘토십 번호에 대한 정보를 찾을 수 없습니다: " + mentorshipNo));
 
-        // 튜티 상세 정보 조회
-        Mentorship mentorship = mentorshipRepository.findByTutee(tutee).orElseThrow(() -> new NoSuchElementException("not found mentorship for tutee: " + tuteeNo));
+        // 멘토십의 튜티 정보 가져오기
+        User tutee = mentorship.getTutee();
 
-        // 멘토십 상세 정보와 키워드 리스트를 가져와서 DTO로 반환
-        TuteeDetailResponse tuteeDetail = TuteeDetailResponse.builder()
+        // TuteeDetailResponse 생성 및 반환
+        return TuteeDetailResponse.builder()
                 .tuteeNo(tutee.getUserNo())
                 .name(tutee.getUserName())
-                .keywordList(Arrays.asList(tutee.getProfile().getKeywordArray())) // 키워드 리스트
-                .mentorshipDay(Arrays.asList(mentorship.getMentorshipDay())) // 중복 선택 가능한 멘토십 요일
-                .mentorshipTime(Arrays.asList(mentorship.getMentorshipTime())) // 선호 시간
-                .note(mentorship.getNote()) // 노트
+                .keywordList(tutee.getProfile().getKeywordArray()) // 키워드 배열
+                .mentorshipDay(mentorship.getMentorshipDay().split(","))       // 멘토십 요일 배열
+                .mentorshipTime(mentorship.getMentorshipTime()) // 선호 시간은 리스트
+                .note(mentorship.getNote())                        // 노트
                 .build();
-
-        return tuteeDetail;
     }
 }
