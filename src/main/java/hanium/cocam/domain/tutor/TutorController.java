@@ -77,15 +77,20 @@ public class TutorController {
         );
     }
 
-    @GetMapping("/mentorship/{mentorshipNo}/tutee")
-    public ResponseEntity<ResponseDTO<TuteeDetailResponse>> getTuteeDetailByMentorship(@PathVariable(name = "mentorshipNo") Long mentorshipNo) {
-        TuteeDetailResponse tuteeDetail = tutorService.getTuteeDetailByMentorship(mentorshipNo);
+    @Operation(
+            summary = "선배 - 마이페이지 - 후배 상세보기(후배 관리, 매칭 관리) API",
+            description = "후배관리, 매칭관리 - 후배 정보 상세 보기 API입니다."
+    )
+    @GetMapping("/myTutee/detail/{mentorshipNo}")
+    public ResponseEntity<ResponseDTO<TuteeDetailResponse>> getMytuteeDetail(@PathVariable(name = "mentorshipNo") Long mentorshipNo) {
+        TuteeDetailResponse myTuteeDetail = tutorService.getMytuteeDetail(mentorshipNo);
+
         return ResponseEntity.ok().body(
                 ResponseDTO.<TuteeDetailResponse>builder()
                         .result(true)
                         .status(HttpStatus.OK.value())
                         .message("튜티 상세 정보 조회 완료")
-                        .data(tuteeDetail)
+                        .data(myTuteeDetail)
                         .build()
         );
     }
