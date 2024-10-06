@@ -105,6 +105,7 @@ public class TutorService {
         return TuteeDetailResponse.builder()
                 .tuteeNo(tutee.getUserNo())
                 .name(tutee.getUserName())
+                .classLevel(tutee.getProfile().getLevel())
                 .keywordList(tutee.getProfile().getKeywordArray()) // 키워드 배열
                 .mentorshipDay(mentorship.getMentorshipDay().split(","))       // 멘토십 요일 배열
                 .mentorshipTime(mentorship.getMentorshipTime())
