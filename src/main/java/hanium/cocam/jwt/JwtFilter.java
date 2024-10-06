@@ -66,8 +66,8 @@ public class JwtFilter extends OncePerRequestFilter {
             log.error("Invalid token signature: {}", e.getMessage());
             sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "Invalid token", null);
         } catch (Exception e) {
-            log.error("Token parsing error: {}", e.getMessage());
-            sendErrorResponse(response, HttpStatus.BAD_REQUEST, "Token error", null);
+            log.error("{}", e.getMessage());
+            sendErrorResponse(response, HttpStatus.BAD_REQUEST, e.getMessage(), null);
         }
     }
 

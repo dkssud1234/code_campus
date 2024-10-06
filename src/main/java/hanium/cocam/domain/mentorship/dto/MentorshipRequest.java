@@ -17,7 +17,7 @@ import java.util.List;
 public class MentorshipRequest {
     private Long tutorNo;
     private Long tuteeNo;
-    private String mentorshipDay;
+    private String [] mentorshipDay;
     private String mentorshipTime;
     private Category category;
     private String note; // 선배에게 하고 싶은 말
@@ -26,7 +26,7 @@ public class MentorshipRequest {
         return Mentorship.builder()
                 .tutor(tutor)
                 .tutee(tutee)
-                .mentorshipDay(mentorshipDay)
+                .mentorshipDay(String.join(",",mentorshipDay))
                 .mentorshipTime(mentorshipTime)
                 .category(category)
                 .mentorshipStatus("WAIT") // 기본값: 매칭 대기 상태
