@@ -12,6 +12,8 @@ public class TutorListResponse {
 
     private Long userNo;
     private String userName;
+    private String classType;
+    private String userSex;
     private String tutorProfileImg;
     private String school;
     private String[] keyword;
@@ -23,6 +25,8 @@ public class TutorListResponse {
     public TutorListResponse(User user, Profile profile) {
         this.userNo = user.getUserNo();
         this.userName = user.getUserName();
+        this.classType = profile.getClassType();
+        this.userSex = user.getUserSex();
         this.tutorProfileImg = profile.getTutorProfileImg();
         this.school = profile.getSchool();
         this.keyword = profile.getKeywordArray();
