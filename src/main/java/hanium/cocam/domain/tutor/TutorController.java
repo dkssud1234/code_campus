@@ -76,7 +76,10 @@ public class TutorController {
                         .build()
         );
     }
-
+    @Operation(
+            summary = "후배 상세 정보 api",
+            description = "튜티 상세정보에 대한 정보를 조회합니다"
+    )
     @GetMapping("/mentorship/{mentorshipNo}/tutee")
     public ResponseEntity<ResponseDTO<TuteeDetailResponse>> getTuteeDetailByMentorship(@PathVariable(name = "mentorshipNo") Long mentorshipNo) {
         TuteeDetailResponse tuteeDetail = tutorService.getTuteeDetailByMentorship(mentorshipNo);
@@ -89,4 +92,20 @@ public class TutorController {
                         .build()
         );
     }
+    @Operation(
+            summary = "후배 삭제 API",
+            description = "특정 멘토십 번호에 해당하는 후배와의 매칭을 삭제합니다."
+    )
+    @DeleteMapping("/mentorship/{mentorshipNo}/delete")
+    public ResponseEntity<ResponseDTO<Void>> deleteTuteeByMentorship(@PathVariable(name = "mentorshipNo") Long mentorshipNo) {
+        tutorService.deleteTuteeByMentorship(mentorshipNo);
+        return ResponseEntity.ok().body(
+                ResponseDTO.<Void>builder()
+                        .result(true)
+                        .status(HttpStatus.OK.value())
+                        .message("후배 삭제 완료")
+                        .build()
+        );
+    }
+
 }

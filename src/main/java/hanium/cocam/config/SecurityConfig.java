@@ -42,7 +42,7 @@ public class SecurityConfig {
             "/api/users/isDuplicate/**",
             "/api/users/issueAccessToken",
             "/api/tutor/find/**",
-            "/api/tutor/mentorship/{mentorshipNo}/tutee",
+            "/api/tutor/mentorship/**",
             "/api/tutor/profile/**",
             "/api/users/detail/**",
             "/swagger",

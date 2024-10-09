@@ -111,4 +111,11 @@ public class TutorService {
                 .note(mentorship.getNote())                        // 노트
                 .build();
     }
+
+    public void deleteTuteeByMentorship(Long mentorshipNo) {
+        Mentorship mentorship = mentorshipRepository.findById(mentorshipNo)
+                .orElseThrow(() -> new NoSuchElementException("해당 멘토십 번호에 대한 정보를 찾을 수 없습니다: " + mentorshipNo));
+
+        mentorshipRepository.delete(mentorship);
+    }
 }
