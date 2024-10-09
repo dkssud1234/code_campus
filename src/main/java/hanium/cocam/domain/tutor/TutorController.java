@@ -65,6 +65,7 @@ public class TutorController {
                     "myTuteeListResponse: 후배 관리 - 수업 진행 중인 후배 list를 반환합니다. <br>" +
                     "requestedMentorshipListResponse: 매칭 요청 리스트 - 나에게 매칭 요청을 한 후배 list를 반환합니다. <br>"
     )
+  
     @GetMapping("/{id}/detail")
     public ResponseEntity<ResponseDTO<TutorMyPageResponse>> myPage(@PathVariable(name = "id") Long tutorNo) {
         return ResponseEntity.ok().body(
@@ -84,13 +85,29 @@ public class TutorController {
     @GetMapping("/myTutee/detail/{mentorshipNo}")
     public ResponseEntity<ResponseDTO<TuteeDetailResponse>> getMytuteeDetail(@PathVariable(name = "mentorshipNo") Long mentorshipNo) {
         TuteeDetailResponse myTuteeDetail = tutorService.getMytuteeDetail(mentorshipNo);
-
+      
         return ResponseEntity.ok().body(
                 ResponseDTO.<TuteeDetailResponse>builder()
                         .result(true)
                         .status(HttpStatus.OK.value())
                         .message("튜티 상세 정보 조회 완료")
                         .data(myTuteeDetail)
+                        .build()
+        );
+    }
+  
+    @Operation(
+            summary = "후배 삭제 API",
+            description = "특정 멘토십 번호에 해당하는 후배와의 매칭을 삭제합니다."
+    )
+    @DeleteMapping("/mentorship/{mentorshipNo}/delete")
+    public ResponseEntity<ResponseDTO<Void>> deleteTuteeByMentorship(@PathVariable(name = "mentorshipNo") Long mentorshipNo) {
+        tutorService.deleteTuteeByMentorship(mentorshipNo);
+        return ResponseEntity.ok().body(
+                ResponseDTO.<Void>builder()
+                        .result(true)
+                        .status(HttpStatus.OK.value())
+                        .message("후배 삭제 완료")
                         .build()
         );
     }
