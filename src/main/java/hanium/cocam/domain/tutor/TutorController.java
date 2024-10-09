@@ -95,20 +95,4 @@ public class TutorController {
                         .build()
         );
     }
-  
-    @Operation(
-            summary = "후배 삭제 API",
-            description = "특정 멘토십 번호에 해당하는 후배와의 매칭을 삭제합니다."
-    )
-    @DeleteMapping("/mentorship/{mentorshipNo}/delete")
-    public ResponseEntity<ResponseDTO<Void>> deleteTuteeByMentorship(@PathVariable(name = "mentorshipNo") Long mentorshipNo) {
-        tutorService.deleteTuteeByMentorship(mentorshipNo);
-        return ResponseEntity.ok().body(
-                ResponseDTO.<Void>builder()
-                        .result(true)
-                        .status(HttpStatus.OK.value())
-                        .message("후배 삭제 완료")
-                        .build()
-        );
-    }
 }
