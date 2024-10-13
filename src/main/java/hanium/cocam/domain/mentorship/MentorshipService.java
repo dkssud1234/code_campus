@@ -47,12 +47,14 @@ public class MentorshipService {
 
         // 튜터의 키워드 가져오기
         List<String> tutorKeywords = Arrays.asList(tutor.getProfile().getKeywordArray());
-
         // 튜티의 키워드 가져오기
         List<String> tuteeKeywords = Arrays.asList(tutee.getProfile().getKeywordArray());
 
+        String tutorLevel = tutor.getProfile().getLevel();
+        String tuteeLevel = tutee.getProfile().getLevel();
+
         // 키워드 정보를 DTO로 반환
-        return new MentorshipKeywordsResponse(tutorKeywords, tuteeKeywords);
+        return new MentorshipKeywordsResponse(tutorKeywords, tuteeKeywords, tutorLevel, tuteeLevel);
     }
 
     public String updateMentorship(MentorshipAcceptRequest request) {

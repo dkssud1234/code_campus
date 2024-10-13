@@ -10,4 +10,6 @@ import java.util.List;
 public class MentorshipKeywordsResponse {
     private List<String> tutorKeywords;
     private List<String> tuteeKeywords;
+    private String tutorLevel;
+    private String tuteeLevel;
 }
