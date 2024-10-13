@@ -43,6 +43,7 @@ public class Profile {
 
     // ============ 후배에 해당하는 부분 ============
     private String studentType; // 학생 구분(대학생, 고등학생, 중학생)
+    private String tuteeProfileImg;
     // =========================================
 
     // keyword 필드의 String[] 변환 메서드 추가
