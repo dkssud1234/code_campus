@@ -20,7 +20,6 @@ public class MentorshipRequest {
     private String[] mentorshipDay;
     private String mentorshipStartTime;
     private String mentorshipEndTime;
-    private Category category;
     private String note; // 선배에게 하고 싶은 말
 
     public Mentorship toEntity(User tutor, User tutee) {
@@ -29,7 +28,6 @@ public class MentorshipRequest {
                 .tutee(tutee)
                 .mentorshipDay(String.join(",",mentorshipDay))
                 .mentorshipTime(mentorshipStartTime+"~"+mentorshipEndTime)
-                .category(category)
                 .mentorshipStatus("WAIT") // 기본값: 매칭 대기 상태
                 .note(note)
                 .build();
