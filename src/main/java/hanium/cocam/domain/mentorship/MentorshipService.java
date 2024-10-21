@@ -31,7 +31,6 @@ public class MentorshipService {
         // Mentorship 엔티티 생성 및 저장
         Mentorship mentorship = request.toEntity(tutor, tutee);
 
-
         mentorshipRepository.save(mentorship);
 
         return "매칭 신청 완료";
@@ -47,12 +46,14 @@ public class MentorshipService {
 
         // 튜터의 키워드 가져오기
         List<String> tutorKeywords = Arrays.asList(tutor.getProfile().getKeywordArray());
-
         // 튜티의 키워드 가져오기
         List<String> tuteeKeywords = Arrays.asList(tutee.getProfile().getKeywordArray());
 
+        String tutorLevel = tutor.getProfile().getLevel();
+        String tuteeLevel = tutee.getProfile().getLevel();
+
         // 키워드 정보를 DTO로 반환
-        return new MentorshipKeywordsResponse(tutorKeywords, tuteeKeywords);
+        return new MentorshipKeywordsResponse(tutorKeywords, tuteeKeywords, tutorLevel, tuteeLevel);
     }
 
     public String updateMentorship(MentorshipAcceptRequest request) {
@@ -62,6 +63,14 @@ public class MentorshipService {
         mentorshipRepository.save(findMentorship);
 
         return "매칭 상태 변경 완료 status : "+request.getStatus();
+    }
+
+
+    public void deleteTuteeByMentorship(Long mentorshipNo) {
+        Mentorship mentorship = mentorshipRepository.findById(mentorshipNo)
+                .orElseThrow(() -> new NoSuchElementException("해당 멘토십 번호에 대한 정보를 찾을 수 없습니다: " + mentorshipNo));
+
+        mentorshipRepository.delete(mentorship);
     }
 }
 

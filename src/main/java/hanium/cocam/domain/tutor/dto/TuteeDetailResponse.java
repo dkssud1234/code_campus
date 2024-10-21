@@ -13,5 +13,6 @@ public class TuteeDetailResponse {
     private String[] keywordList;    // 키워드 리스트 (category)
     private String[] mentorshipDay;  // 멘토십 요일 (중복 가능)
     private String mentorshipTime;       // 멘토십 시간대
+    private String classLevel;
     private String note;                 // 튜티의 노트
 }

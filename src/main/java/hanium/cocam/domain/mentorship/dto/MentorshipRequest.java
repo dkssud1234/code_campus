@@ -17,9 +17,9 @@ import java.util.List;
 public class MentorshipRequest {
     private Long tutorNo;
     private Long tuteeNo;
-    private String [] mentorshipDay;
-    private String mentorshipTime;
-    private Category category;
+    private String[] mentorshipDay;
+    private String mentorshipStartTime;
+    private String mentorshipEndTime;
     private String note; // 선배에게 하고 싶은 말
 
     public Mentorship toEntity(User tutor, User tutee) {
@@ -27,8 +27,7 @@ public class MentorshipRequest {
                 .tutor(tutor)
                 .tutee(tutee)
                 .mentorshipDay(String.join(",",mentorshipDay))
-                .mentorshipTime(mentorshipTime)
-                .category(category)
+                .mentorshipTime(mentorshipStartTime+"~"+mentorshipEndTime)
                 .mentorshipStatus("WAIT") // 기본값: 매칭 대기 상태
                 .note(note)
                 .build();

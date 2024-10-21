@@ -65,6 +65,7 @@ public class TutorController {
                     "myTuteeListResponse: 후배 관리 - 수업 진행 중인 후배 list를 반환합니다. <br>" +
                     "requestedMentorshipListResponse: 매칭 요청 리스트 - 나에게 매칭 요청을 한 후배 list를 반환합니다. <br>"
     )
+  
     @GetMapping("/{id}/detail")
     public ResponseEntity<ResponseDTO<TutorMyPageResponse>> myPage(@PathVariable(name = "id") Long tutorNo) {
         return ResponseEntity.ok().body(
@@ -84,7 +85,7 @@ public class TutorController {
     @GetMapping("/myTutee/detail/{mentorshipNo}")
     public ResponseEntity<ResponseDTO<TuteeDetailResponse>> getMytuteeDetail(@PathVariable(name = "mentorshipNo") Long mentorshipNo) {
         TuteeDetailResponse myTuteeDetail = tutorService.getMytuteeDetail(mentorshipNo);
-
+      
         return ResponseEntity.ok().body(
                 ResponseDTO.<TuteeDetailResponse>builder()
                         .result(true)

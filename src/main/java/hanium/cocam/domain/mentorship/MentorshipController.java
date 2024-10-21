@@ -3,8 +3,10 @@ package hanium.cocam.domain.mentorship;
 import hanium.cocam.domain.mentorship.dto.MentorshipAcceptRequest;
 import hanium.cocam.domain.mentorship.dto.MentorshipKeywordsResponse;
 import hanium.cocam.domain.mentorship.dto.MentorshipRequest;
+import hanium.cocam.dto.ResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,15 +28,15 @@ public class MentorshipController {
     }
     @Operation(
             summary = "튜터와 튜티의 키워드 조회 API",
-            description = "튜터 번호(tutorNo)와 로그인한 튜티 번호(tuteeNo)를 받아 튜터와 튜티의 키워드를 모두 조회합니다."
+            description = "튜터 번호(tutorNo)와 튜티 번호(tuteeNo)를 받아 튜터와 튜티의 키워드를 모두 조회합니다."
     )
     @GetMapping("/show-keyword")
     public ResponseEntity<MentorshipKeywordsResponse> showKeywords(
             @RequestParam(name = "tutorNo") Long tutorNo,
             @RequestParam(name = "tuteeNo") Long tuteeNo) {
 
-        MentorshipKeywordsResponse keywords = mentorshipService.getMentorshipKeywords(tutorNo, tuteeNo);
-        return ResponseEntity.ok().body(keywords);
+        MentorshipKeywordsResponse response = mentorshipService.getMentorshipKeywords(tutorNo, tuteeNo);
+        return ResponseEntity.ok().body(response);
     }
 
     @Operation(
@@ -46,5 +48,21 @@ public class MentorshipController {
     public ResponseEntity<String> updateMentorship(@RequestBody MentorshipAcceptRequest request) {
 
         return ResponseEntity.ok().body(mentorshipService.updateMentorship(request));
+    }
+
+    @Operation(
+            summary = "후배 삭제 API",
+            description = "멘토링을 진행하고 있는 후배와의 매칭을 삭제합니다."
+    )
+    @DeleteMapping("/{mentorshipNo}")
+    public ResponseEntity<ResponseDTO<Void>> deleteTuteeByMentorship(@PathVariable(name = "mentorshipNo") Long mentorshipNo) {
+        mentorshipService.deleteTuteeByMentorship(mentorshipNo);
+        return ResponseEntity.ok().body(
+                ResponseDTO.<Void>builder()
+                        .result(true)
+                        .status(HttpStatus.OK.value())
+                        .message("후배 삭제 완료")
+                        .build()
+        );
     }
 }

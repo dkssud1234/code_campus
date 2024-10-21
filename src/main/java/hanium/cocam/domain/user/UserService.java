@@ -99,6 +99,7 @@ public class UserService {
             User user = findUser.get();
             String userName = user.getUserName();
             Long userNo = user.getUserNo();
+            UserType userType = user.getUserType();
 
             // 리프레쉬 토큰 확인 및 유효성 검증
             RefreshToken refreshToken = refreshTokenService.isExistsRefreshToken(user, userEmail);
@@ -110,6 +111,7 @@ public class UserService {
                     .refreshToken(refreshToken.getRefreshToken())
                     .expiryDate(JwtUtil.getExpirationDate(accessToken, secretKey))
                     .userNo(userNo)
+                    .userType(userType)
                     .userEmail(userEmail)
                     .userName(userName)
                     .build();
