@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -36,8 +37,8 @@ public class TuteeService {
                 .name(tutee.getUserName())
                 .userType(tutee.getUserType())
                 .build();
-
-        List<RequestedMentorshipListResponse> requestedList = mentorshipRepository.findByTuteeAndMentorshipStatus(tutee, "WAIT")
+        List<String> requestedStatusList = Arrays.asList("WAIT", "NO");
+        List<RequestedMentorshipListResponse> requestedList = mentorshipRepository.findByTuteeAndMentorshipStatusIn(tutee, requestedStatusList)
                 .stream()
                 .map(mentorship -> new RequestedMentorshipListResponse(
                         mentorship.getMentorshipNo(),
