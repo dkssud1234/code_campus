@@ -10,4 +10,5 @@ public class MyTutorListResponse {
     private Long tutorNo;
     private String tutorName;
     private String mentorshipTime;
+    private String mentorshipDate;
 }
