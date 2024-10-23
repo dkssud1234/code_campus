@@ -11,4 +11,5 @@ public class RequestedMentorshipListResponse {
     private String tutorName;
     private String mentorshipTime;
     private String note; // 튜터에게 하고 싶은 말
+    private String mentorshipStatus;
 }

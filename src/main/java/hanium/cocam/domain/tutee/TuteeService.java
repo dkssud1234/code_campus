@@ -44,7 +44,8 @@ public class TuteeService {
                         mentorship.getTutor().getUserNo(),
                         mentorship.getTutor().getUserName(),
                         mentorship.getMentorshipDay() + " " + mentorship.getMentorshipTime(),
-                        mentorship.getNote()
+                        mentorship.getNote(),
+                        mentorship.getMentorshipStatus()
                 ))
                 .collect(Collectors.toList());
 
@@ -54,7 +55,8 @@ public class TuteeService {
                         mentorship.getMentorshipNo(),
                         mentorship.getTutor().getUserNo(),
                         mentorship.getTutor().getUserName(),
-                        mentorship.getMentorshipDay() + " " + mentorship.getMentorshipTime()
+                        mentorship.getMentorshipDay() + " " + mentorship.getMentorshipTime(),
+                        mentorship.getMentorshipStatus()
                 ))
                 .collect(Collectors.toList());
 
