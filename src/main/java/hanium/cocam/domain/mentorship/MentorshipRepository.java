@@ -15,4 +15,8 @@ public interface MentorshipRepository extends JpaRepository<Mentorship, Long> {
     Optional<Mentorship> findByTutee(User tuteeNo);
 
     List<Mentorship> findByTuteeAndMentorshipStatus(User tutee, String mentorshipStatus);
+
+    List<Mentorship> findByTuteeAndMentorshipStatusIn(User tutee, List<String> mentorshipStatus);
 }
+
+
